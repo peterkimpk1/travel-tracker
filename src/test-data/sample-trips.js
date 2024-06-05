@@ -1,6 +1,7 @@
 export default { trips: [
     {
         "id": 1,
+        "userID": 25,
         "destinationID": 15,
         "travelers": 2,
         "date": "2023/08/14",
@@ -10,6 +11,7 @@ export default { trips: [
     },
     {
         "id": 2,
+        "userID": 8,
         "destinationID": 33,
         "travelers": 4,
         "date": "2023/09/30",
@@ -19,6 +21,7 @@ export default { trips: [
     },
     {
         "id": 3,
+        "userID": 19,
         "destinationID": 21,
         "travelers": 1,
         "date": "2023/05/15",
@@ -28,6 +31,7 @@ export default { trips: [
     },
     {
         "id": 4,
+        "userID": 15,
         "destinationID": 47,
         "travelers": 3,
         "date": "2023/11/23",
@@ -37,6 +41,7 @@ export default { trips: [
     },
     {
         "id": 5,
+        "userID": 16,
         "destinationID": 38,
         "travelers": 5,
         "date": "2023/04/18",
@@ -46,6 +51,7 @@ export default { trips: [
     },
     {
         "id": 6,
+        "userID": 40,
         "destinationID": 12,
         "travelers": 6,
         "date": "2023/07/07",
@@ -55,6 +61,7 @@ export default { trips: [
     },
     {
         "id": 7,
+        "userID": 29,
         "destinationID": 29,
         "travelers": 2,
         "date": "2023/10/05",
@@ -64,6 +71,7 @@ export default { trips: [
     },
     {
         "id": 8,
+        "userID": 43,
         "destinationID": 41,
         "travelers": 4,
         "date": "2023/01/12",
@@ -73,6 +81,7 @@ export default { trips: [
     },
     {
         "id": 9,
+        "userID": 34,
         "destinationID": 26,
         "travelers": 3,
         "date": "2023/02/25",
@@ -82,6 +91,7 @@ export default { trips: [
     },
     {
         "id": 10,
+        "userID": 45,
         "destinationID": 18,
         "travelers": 5,
         "date": "2023/03/29",
@@ -91,6 +101,7 @@ export default { trips: [
     },
     {
         "id": 11,
+        "userID": 21,
         "destinationID": 34,
         "travelers": 3,
         "date": "2023/06/19",
@@ -100,6 +111,7 @@ export default { trips: [
     },
     {
         "id": 12,
+        "userID": 7,
         "destinationID": 42,
         "travelers": 5,
         "date": "2023/08/11",
@@ -109,6 +121,7 @@ export default { trips: [
     },
     {
         "id": 13,
+        "userID": 1,
         "destinationID": 16,
         "travelers": 2,
         "date": "2023/03/03",
@@ -118,6 +131,7 @@ export default { trips: [
     },
     {
         "id": 14,
+        "userID": 3,
         "destinationID": 27,
         "travelers": 6,
         "date": "2023/09/22",
@@ -127,6 +141,7 @@ export default { trips: [
     },
     {
         "id": 15,
+        "userID": 22,
         "destinationID": 50,
         "travelers": 1,
         "date": "2023/11/17",
@@ -136,6 +151,7 @@ export default { trips: [
     },
     {
         "id": 16,
+        "userID": 12,
         "destinationID": 13,
         "travelers": 4,
         "date": "2023/12/01",
@@ -145,6 +161,7 @@ export default { trips: [
     },
     {
         "id": 17,
+        "userID": 36,
         "destinationID": 23,
         "travelers": 2,
         "date": "2023/02/14",
@@ -154,6 +171,7 @@ export default { trips: [
     },
     {
         "id": 18,
+        "userID": 13,
         "destinationID": 45,
         "travelers": 5,
         "date": "2023/10/09",
@@ -161,8 +179,10 @@ export default { trips: [
         "status": "approved",
         "suggestedActivities": []
     },
+
     {
         "id": 19,
+        "userID": 11,
         "destinationID": 20,
         "travelers": 3,
         "date": "2023/05/27",
@@ -172,6 +192,7 @@ export default { trips: [
     },
     {
         "id": 20,
+        "userID": 25,
         "destinationID": 37,
         "travelers": 6,
         "date": "2023/07/03",
