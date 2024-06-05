@@ -1,4 +1,4 @@
-export default trips = [
+export default { trips: [
     {
         "id": 1,
         "destinationID": 15,
@@ -179,4 +179,4 @@ export default trips = [
         "status": "approved",
         "suggestedActivities": []
     }
-]
+]}
