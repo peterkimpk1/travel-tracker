@@ -3,7 +3,7 @@ const expect = chai.expect;
 import trips from '../src/test-data/sample-trips.js';
 import travelers from '../src/test-data/sample-travelers.js';
 import destinations from '../src/test-data/sample-destinations.js';
-const {calculateTripCost, getPastUserTrips} = require('../src/scripts.js')
+const {calculateTripCost, getPastUserTrips, getDestinationNames} = require('../src/scripts.js')
 
 describe('calculateTripCost', function() {
   var tripData, destinationData;
@@ -78,5 +78,23 @@ describe('getPastUserTrips', () => {
         "status": "approved",
         "suggestedActivities": []
     }])
+  })
+})
+
+describe('getDestinationNames', () => {
+  var destinationData, tripData;
+  beforeEach(() => {
+    destinationData = destinations.destinations;
+    tripData = trips.trips;
+  })
+  it ('should return the names of destinations the user has visited', () => {
+    const userID = 25;
+    const destinationNames = getDestinationNames(tripData,destinationData,userID)
+    expect(destinationNames).to.deep.equal(["Tulum, Mexico", "Kathmandu, Nepal", "Anchorage, Alaska"])
+  })
+  it ('should be able to return the destination for a single trip', () => {
+    const userID = 8;
+    const destinationName = getDestinationNames(tripData, destinationData, userID);
+    expect(destinationName).to.deep.equal(["Antananarivo, Madagascar"])
   })
 })
