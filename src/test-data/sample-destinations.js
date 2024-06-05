@@ -1,5 +1,29 @@
 export default { destinations: [
     {
+        "id": 3,
+        "destination": "Zürich, Switzerland",
+        "estimatedLodgingCostPerDay": 1100,
+        "estimatedFlightCostPerPerson": 110,
+        "image": "https://images.unsplash.com/photo-1515488764276-beab7607c1e6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1390&q=80",
+        "alt": "landscape photo of cityscape"
+    },
+    {
+        "id": 5,
+        "destination": "Dar es Salaam, Tanzania",
+        "estimatedLodgingCostPerDay": 1200,
+        "estimatedFlightCostPerPerson": 100,
+        "image": "https://images.unsplash.com/photo-1568625502763-2a5ec6a94c47?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=80",
+        "alt": "aerial photography of high-rise building"
+    },
+    {
+        "id": 7,
+        "destination": "Castries, St Lucia",
+        "estimatedLodgingCostPerDay": 650,
+        "estimatedFlightCostPerPerson": 90,
+        "image": "https://images.unsplash.com/photo-1524478075552-c2763ea171b8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1502&q=80",
+        "alt": "aerial photography of rocky mountain under cloudy sky"
+    },
+    {
         "id": 12,
         "destination": "Miami, Florida",
         "estimatedLodgingCostPerDay": 158,
@@ -152,5 +176,4 @@ export default { destinations: [
         "alt": "two white motorboats on dock near brown trees at daytime"
     }
 ]
- 
 }
