@@ -3,7 +3,7 @@ const expect = chai.expect;
 import trips from '../src/test-data/sample-trips.js';
 import travelers from '../src/test-data/sample-travelers.js';
 import destinations from '../src/test-data/sample-destinations.js';
-const {calculateTripCost, getPastUserTrips, getDestinationNames} = require('../src/scripts.js')
+const {calculateTripCost, getPastUserTrips, getDestinationNames, getDestinationIDs} = require('../src/userFunctions.js')
 
 describe('calculateTripCost', function() {
   var tripData, destinationData;
@@ -96,5 +96,16 @@ describe('getDestinationNames', () => {
     const userID = 8;
     const destinationName = getDestinationNames(tripData, destinationData, userID);
     expect(destinationName).to.deep.equal(["Antananarivo, Madagascar"])
+  })
+})
+
+describe('getDestinationIDs', () => {
+  it ('should return all the ids of the destinations the user has NOT visited, excluding duplicates', () => {
+    let tripData = trips.trips;
+    const userID = 25;
+    const destinationNames = getDestinationIDs(tripData, userID)
+    expect(destinationNames).to.deep.equal(
+      [12,13,16,18,20,21,23,26,27,29,33,34,37,38,41,42,45,47,50]
+    )
   })
 })
