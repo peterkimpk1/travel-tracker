@@ -19,8 +19,19 @@
     <h1 class="welcome-message">Welcome, [User]</h1>
     <div class="user-wrapper">
       <h2 class="last-trip-date">Your last trip was [Date].</h2>
-      <button>Book Another Trip?</button>
+      <button data-open-modal>Book Another Trip?</button>
     </div>
+    <dialog data-modal class="modal">
+      <form class="book-trip-form">
+        <label for="trip-date">Trip Starting Date: </label>
+        <input type="date" id="trip-date"/><br>
+        <label for="duration">Duration of Trip: </label>
+        <input type="number" id="duration" step="1" max="31" placeholder="5"/><span style="margin-left:5px">days</span><br>
+        <label for="travelers">Number of Travelers: </label>
+        <input type="number" id="travelers" step="1" max="15" placeholder="5"/><span style="margin-left:5px">adults</span><br>
+        <button data-close-modal formmethod="dialog">Close</button><button type="submit">Submit</button>
+      </form>
+    </dialog>
   </section>
   <section class="summary-section">Summary
 
