@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Webpack Starter Kit</title>
 </head>
 <body>
   <nav>
@@ -17,13 +16,15 @@
     </ul>
   </nav>
   <section class="welcome-section">
-    <h1>Welcome, [User]</h1>
+    <h1 class="welcome-message">Welcome, [User]</h1>
     <div class="user-wrapper">
-      <h2>Your last trip was [Date].</h2>
+      <h2 class="last-trip-date">Your last trip was [Date].</h2>
       <button>Book Another Trip?</button>
     </div>
   </section>
   <section class="summary-section">Summary
+
+    <p class="user-total-costs"></p>
   </section>
   <section class="trips-section">
     <div class="section-card-wrapper">
@@ -40,6 +41,7 @@
     <div class="section-card-wrapper">
       <h3>Past Trip(s)</h3>
       <div class="trip-wrapper">
+        <p class="user-past-trips"></p>
         <h4 class="trip-destination" id="past-trip-one"></h4>
         <image src="" alt="" id="past-trip-image-one"/>
         <h4 class="trip-destination" id="past-trip-two"></h4>
