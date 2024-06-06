@@ -16,7 +16,6 @@ const destinationSelection = document.getElementById('destinations')
 
 window.addEventListener('load',() => {
     fetchUserData()
-
 })
 
 openModalBtn.addEventListener('click',() =>{
@@ -47,6 +46,7 @@ const fetchUserData = () => {
        const allDestinationIDs = getNonVisitedDestinationIDs(e[1].trips,0)
        const allDestinationInfo = getDestinationInfo(e[2].destinations,allDestinationIDs)
        createGlideSlides(allDestinationInfo)
+       createDestinationSelections(allDestinationInfo)
        const userCost = calculateTripCost(e[1].trips,e[2].destinations,user.id)
        const userTrips = getVisitedDestinationNames(e[1].trips,e[2].destinations,user.id)
        const sortedUserDates = getPastUserTrips(e[1].trips,user.id).map(trip => new Date(trip.date)).sort((a,b) => a-b);
@@ -86,5 +86,14 @@ const createGlideSlides = (destinations) => {
         <h5>${destinations.destination}</h5>
         <img src="${destinations.image}" alt="${destinations.alt}"/><br>
         </li>` 
+    })
+}
+
+const createDestinationSelections = (destinations) => {
+    destinations.forEach(destination => {
+        let option = document.createElement("option")
+        option.value = destination.destination
+        option.innerText = destination.destination
+        destinationSelection.appendChild(option)
     })
 }
