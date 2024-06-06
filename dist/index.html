@@ -22,7 +22,20 @@
       <button data-open-modal>Book Another Trip?</button>
     </div>
     <dialog data-modal class="modal">
+      <div class="glide">
+        <div class="glide__track" data-glide-el="track">
+          <ul class="glide__slides">
+    
+          </ul>
+        </div>
+          <div class="glide__arrows" data-glide-el="controls">
+            <button class="glide__arrow glide__arrow--left" data-glide-dir="<">prev</button>
+            <button class="glide__arrow glide__arrow--right" data-glide-dir=">">next</button>
+          </div>
+      </div>  
       <form class="book-trip-form">
+        <label for="destinations">Destination: </label>
+        <select name="destinations" id="destinations"></select>
         <label for="trip-date">Trip Starting Date: </label>
         <input type="date" id="trip-date"/><br>
         <label for="duration">Duration of Trip: </label>
@@ -33,6 +46,8 @@
       </form>
     </dialog>
   </section>
+
+
   <section class="summary-section">Summary
 
     <p class="user-total-costs"></p>
