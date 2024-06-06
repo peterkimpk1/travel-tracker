@@ -1,4 +1,5 @@
 import './css/styles.css';
+import './domUpdates.js';
 
 const calculateTripCost = (tripData, destinationData, userID) =>  {
     let totals = tripData.filter(trip => trip.userID === userID).reduce((acc,trip) => {
@@ -28,7 +29,24 @@ const getPastUserTrips = (tripData, userID) => {
     },[])
 }
 
+const getDestinationNames = (tripData, destinationData, userID) => {
+    let places = [];
+    const filteredTrips = tripData.filter(trip => trip.userID === userID).map(trip => trip.destinationID)
+    filteredTrips.forEach(place => {
+        let destination = destinationData.find(destination => destination.id === place)
+        places.push(destination.destination)
+    })
+    return places;
+}
+
+const getRandomUser = (travelerData) => {
+    const randomIndex = Math.floor(Math.random() * travelerData.length)
+    return travelerData[randomIndex]
+}
+
 export {
     calculateTripCost,
-    getPastUserTrips
+    getPastUserTrips,
+    getRandomUser,
+    getDestinationNames
 }
