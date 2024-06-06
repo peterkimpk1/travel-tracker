@@ -29,7 +29,7 @@ const fetchUserData = () => {
        inputLastTripDate(sortedUserDates[0])
        inputTotalCosts(userCost.totalFlightCost,userCost.totalLodgingCost)
        inputPastTrips(userTrips)
-    })
+    }).catch(err => alert('Could not fetch user data..'))
 }
 
 const inputWelcomeMessage = (user) => {
