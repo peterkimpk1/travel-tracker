@@ -1,4 +1,5 @@
-import {getRandomUser, calculateTripCost, getPastUserTrips, getDestinationNames, getDestinationIDs} from './userFunctions.js'
+import {getRandomUser, calculateTripCost, getPastUserTrips, getVisitedDestinationNames, getNonVisitedDestinationIDs, 
+    getDestinationInfo} from './userFunctions.js'
 import Glide from '@glidejs/glide';
 
 let currentUserId;
@@ -43,36 +44,20 @@ const fetchUserData = () => {
     .then(e => {
        let user = getRandomUser(e[0].travelers)
        currentUserId = user.id
-       const AlldestinationIDs = getDestinationIDs(e[1].trips,0)
-       createTripImageSlides(e[2].destinations,AlldestinationIDs)
+       const allDestinationIDs = getNonVisitedDestinationIDs(e[1].trips,0)
+       const allDestinationInfo = getDestinationInfo(e[2].destinations,allDestinationIDs)
+       createGlideSlides(allDestinationInfo)
        const userCost = calculateTripCost(e[1].trips,e[2].destinations,user.id)
-       const userTrips = getDestinationNames(e[1].trips,e[2].destinations,user.id)
-       const allDestinationNames = getDestinationNames(e[1].trips,e[2].destinations,0)
+       const userTrips = getVisitedDestinationNames(e[1].trips,e[2].destinations,user.id)
        const sortedUserDates = getPastUserTrips(e[1].trips,user.id).map(trip => new Date(trip.date)).sort((a,b) => a-b);
        inputWelcomeMessage(user)
        inputLastTripDate(sortedUserDates[0])
        inputTotalCosts(userCost.totalFlightCost,userCost.totalLodgingCost)
        inputPastTrips(userTrips)
-       
     }).catch(err => alert('Could not fetch user data..'))
 }
 
-const createTripImageSlides = (destinationData, destinationIDs) => {
-    let imageURLs = [];
-    destinationIDs.forEach(id => {
-       let location = destinationData.find(destination => destination.id === id)
-        imageURLs.push({image: location.image, alt: location.alt, destination: location.destination})
-    })
-    imageURLs.forEach((imageURL,i) => {
-        modalSlides.innerHTML += `
-        <li class="glide__slide">
-        <h5>${imageURL.destination}</h5>
-        <img src="${imageURL.image}" alt="${imageURL.alt}"/><br>
-        </li>` 
-    })
 
-    return imageURLs
-}
 
 const inputWelcomeMessage = (user) => {
     let firstName = user.name.split(' ')[0]
@@ -91,5 +76,15 @@ const inputPastTrips = (trips) => {
     userPastTrips.innerHTML = `Your past visited locations: `
     trips.forEach(trip => {
         userPastTrips.innerHTML += `<br><strong>[${trip}],</strong>`
+    })
+}
+
+const createGlideSlides = (destinations) => {
+    destinations.forEach((destinations) => {
+        modalSlides.innerHTML += `
+        <li class="glide__slide">
+        <h5>${destinations.destination}</h5>
+        <img src="${destinations.image}" alt="${destinations.alt}"/><br>
+        </li>` 
     })
 }
