@@ -1,3 +1,7 @@
+body {
+  overflow-x: hidden;
+}
+
 nav {
   display: flex;
   justify-content: space-between;
@@ -61,6 +65,16 @@ nav {
   }
 }
 /*modal*/
+.modal {
+  height: 75vh;
+  width: 60vw;
+  align-content: center;
+  overflow-x: hidden;
+  .book-trip-form {
+    transform: translate(25%)
+  }
+}
+
 label,input {
   margin: 4px 0 4px 0;
 }
@@ -69,4 +83,32 @@ input[type="number"] {
 }
 dialog::backdrop {
   background-color:hsl(234, 44%, 66%, .2);
+}
+.glide {
+  height: 45vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0;
+  img {
+    align-content: center;
+    aspect-ratio: 16/9;
+    height: 40vh;
+    transform: translate(30%)
+  }
+  h5 {
+    font-size: 35px;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+  }
+  button {
+    background-color: hsl(234, 44%, 66%, .5);
+  }
+  button.glide__arrow--left {
+    margin-left: 50px;
+  }
+  button.glide__arrow--right {
+    margin-right: 50px;
+  }
 }
