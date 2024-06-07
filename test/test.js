@@ -4,7 +4,7 @@ import trips from '../src/test-data/sample-trips.js';
 import travelers from '../src/test-data/sample-travelers.js';
 import destinations from '../src/test-data/sample-destinations.js';
 const {calculatePastTripCosts, getPastUserTrips, getVisitedDestinationNames, getNonVisitedDestinationIDs, 
-  getDestinationInfo, findDestinationInfo, calculateTripCost} = require('../src/userFunctions.js')
+  getDestinationInfo, findDestinationInfo, calculateTotalTripCost} = require('../src/userFunctions.js')
 
 describe('calculatePastTripCosts', function() {
   var tripData, destinationData;
@@ -24,6 +24,13 @@ describe('calculatePastTripCosts', function() {
     expect(totals.totalLodgingCost).to.equal(539);
     expect(totals.totalFlightCost).to.equal(5280);
   })
+  it('should only calculate costs from the year past year', () => {
+    const userID = 36;
+    const totals = calculatePastTripCosts(tripData, destinationData, userID)
+    expect(totals.totalLodgingCost).to.equal(660)
+    expect(totals.totalFlightCost).to.equal(3300)
+  })
+
 });
 
 describe('getPastUserTrips', () => {
@@ -39,7 +46,7 @@ describe('getPastUserTrips', () => {
       "userID": 25,
       "destinationID": 15,
       "travelers": 2,
-      "date": "2023/08/14",
+      "date": "2022/08/14",
       "duration": 12,
       "status": "approved",
       "suggestedActivities": []
@@ -49,7 +56,7 @@ describe('getPastUserTrips', () => {
       "userID": 25,
       "destinationID": 37,
       "travelers": 6,
-      "date": "2023/07/03",
+      "date": "2020/07/03",
       "duration": 13,
       "status": "approved",
       "suggestedActivities": []
@@ -59,7 +66,7 @@ describe('getPastUserTrips', () => {
       "userID": 25,
       "destinationID": 42,
       "travelers": 5,
-      "date": "2023/05/06",
+      "date": "2020/05/06",
       "duration": 12,
       "status": "approved",
       "suggestedActivities": []
@@ -74,7 +81,7 @@ describe('getPastUserTrips', () => {
         "userID": 8,
         "destinationID": 33,
         "travelers": 4,
-        "date": "2023/09/30",
+        "date": "2018/09/30",
         "duration": 7,
         "status": "approved",
         "suggestedActivities": []
@@ -145,13 +152,13 @@ describe('findDestinationInfo', () => {
   })
 })
 
-describe('calculateTripCost', () => {
+describe('calculateTotalTripCost', () => {
   it ('should be able to calculate the total booking cost', () => {
     const destinationData = destinations.destinations;
     const destinationName = 'Miami, Florida'
     const duration = 5;
     const travelers = 5;
-    const totalCost = calculateTripCost(duration, travelers, destinationName, destinationData)
+    const totalCost = calculateTotalTripCost(duration, travelers, destinationName, destinationData)
     expect(totalCost.flightCost).to.equal(1375)
     expect(totalCost.lodgingCost).to.equal(790)
   })
