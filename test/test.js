@@ -3,9 +3,10 @@ const expect = chai.expect;
 import trips from '../src/test-data/sample-trips.js';
 import travelers from '../src/test-data/sample-travelers.js';
 import destinations from '../src/test-data/sample-destinations.js';
-const {calculateTripCost, getPastUserTrips, getDestinationNames, getDestinationIDs} = require('../src/userFunctions.js')
+const {calculatePastTripCosts, getPastUserTrips, getVisitedDestinationNames, getNonVisitedDestinationIDs, 
+  getDestinationInfo, findDestinationInfo, calculateTripCost} = require('../src/userFunctions.js')
 
-describe('calculateTripCost', function() {
+describe('calculatePastTripCosts', function() {
   var tripData, destinationData;
   beforeEach(() => {
     tripData = trips.trips;
@@ -13,15 +14,15 @@ describe('calculateTripCost', function() {
   })
   it('should return the total trip costs for lodging and flight for a single user. Costs should be rounded to the nearest cent.', () => {
     const userID = 3;
-    const totals = calculateTripCost(tripData, destinationData, userID)
-    expect(totals.totalLodgingCost).to.equal(36.67);
-    expect(totals.totalFlightCost).to.equal(2200)
+    const totals = calculatePastTripCosts(tripData, destinationData, userID)
+    expect(totals.totalLodgingCost).to.equal(1925);
+    expect(totals.totalFlightCost).to.equal(9570)
   });
   it('should be able to calculate total cost from a single trip.', () => {
     const userID = 8;
-    const totals = calculateTripCost(tripData, destinationData, userID)
-    expect(totals.totalLodgingCost).to.equal(19.25);
-    expect(totals.totalFlightCost).to.equal(1320);
+    const totals = calculatePastTripCosts(tripData, destinationData, userID)
+    expect(totals.totalLodgingCost).to.equal(539);
+    expect(totals.totalFlightCost).to.equal(5280);
   })
 });
 
@@ -81,7 +82,7 @@ describe('getPastUserTrips', () => {
   })
 })
 
-describe('getDestinationNames', () => {
+describe('getVisitedDestinationNames', () => {
   var destinationData, tripData;
   beforeEach(() => {
     destinationData = destinations.destinations;
@@ -89,23 +90,69 @@ describe('getDestinationNames', () => {
   })
   it ('should return the names of destinations the user has visited', () => {
     const userID = 25;
-    const destinationNames = getDestinationNames(tripData,destinationData,userID)
+    const destinationNames = getVisitedDestinationNames(tripData,destinationData,userID)
     expect(destinationNames).to.deep.equal(["Tulum, Mexico", "Kathmandu, Nepal", "Anchorage, Alaska"])
   })
   it ('should be able to return the destination for a single trip', () => {
     const userID = 8;
-    const destinationName = getDestinationNames(tripData, destinationData, userID);
+    const destinationName = getVisitedDestinationNames(tripData, destinationData, userID);
     expect(destinationName).to.deep.equal(["Antananarivo, Madagascar"])
   })
 })
 
-describe('getDestinationIDs', () => {
+describe('getNonVisitedDestinationIDs', () => {
   it ('should return all the ids of the destinations the user has NOT visited, excluding duplicates', () => {
     let tripData = trips.trips;
     const userID = 25;
-    const destinationNames = getDestinationIDs(tripData, userID)
-    expect(destinationNames).to.deep.equal(
+    const destinationIDs = getNonVisitedDestinationIDs(tripData, userID)
+    expect(destinationIDs).to.deep.equal(
       [12,13,16,18,20,21,23,26,27,29,33,34,37,38,41,42,45,47,50]
     )
+  })
+})
+
+describe('getDestinationInfo', () => {
+  var tripData, destinationData;
+  beforeEach(() => {
+    tripData = trips.trips;
+    destinationData = destinations.destinations;
+  })
+  it ('should be able to return the location\s destination information based on the matching destination IDs', () => {
+    const userID = 8;
+    const destinationIDs = getNonVisitedDestinationIDs(tripData,userID)
+    const availableDestinations = [destinationIDs[0],destinationIDs[2]]
+    const destinations = getDestinationInfo(destinationData,availableDestinations)
+    expect(destinations[0].lodgingCost).to.equal(158)
+    expect(destinations[0].flightCost).to.equal(275)
+    expect(destinations[1].lodgingCost).to.equal(100)
+    expect(destinations[1].flightCost).to.equal(350)
+  })
+})
+
+describe('findDestinationInfo', () => {
+  it ('should be able to return the destination\s info, given the destination name.', () => {
+    const destinationName = 'Miami, Florida'
+    const destinationData = destinations.destinations;
+    const destinationInfo = findDestinationInfo(destinationData, destinationName)
+    expect(destinationInfo).to.deep.equal({
+      "id": 12,
+      "destination": "Miami, Florida",
+      "estimatedLodgingCostPerDay": 158,
+      "estimatedFlightCostPerPerson": 275,
+      "image": "https://images.unsplash.com/photo-1514214246283-d427a95c5d2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1573&q=80",
+      "alt": "sand with palm trees and tall buildings in the background"
+    })
+  })
+})
+
+describe('calculateTripCost', () => {
+  it ('should be able to calculate the total booking cost', () => {
+    const destinationData = destinations.destinations;
+    const destinationName = 'Miami, Florida'
+    const duration = 5;
+    const travelers = 5;
+    const totalCost = calculateTripCost(duration, travelers, destinationName, destinationData)
+    expect(totalCost.flightCost).to.equal(1375)
+    expect(totalCost.lodgingCost).to.equal(790)
   })
 })

@@ -1,4 +1,4 @@
-const calculateTripCost = (tripData, destinationData, userID) =>  {
+const calculatePastTripCosts = (tripData, destinationData, userID) =>  {
     let totals = tripData.filter(trip => trip.userID === userID).reduce((acc,trip) => {
         if (!acc.totalLodgingCost && !acc.totalFlightCost) {
             acc.totalLodgingCost = 0;
@@ -6,8 +6,8 @@ const calculateTripCost = (tripData, destinationData, userID) =>  {
         }
         destinationData.forEach(destination => {
             if(trip.destinationID === destination.id) {
-                acc.totalLodgingCost += (destination.estimatedLodgingCostPerDay) / (trip.travelers) * 1.1
-                acc.totalFlightCost += destination.estimatedFlightCostPerPerson * 1.1
+                acc.totalLodgingCost += destination.estimatedLodgingCostPerDay * 1.1 * trip.duration
+                acc.totalFlightCost += destination.estimatedFlightCostPerPerson * 1.1 * trip.travelers
             }
         })
         return acc;
@@ -25,7 +25,7 @@ const getPastUserTrips = (tripData, userID) => {
     },[])
 }
 
-const getDestinationNames = (tripData, destinationData, userID) => {
+const getVisitedDestinationNames = (tripData, destinationData, userID) => {
     let places = [];
     const filteredTrips = tripData.filter(trip => trip.userID === userID).map(trip => trip.destinationID)
     filteredTrips.forEach(place => {
@@ -35,7 +35,7 @@ const getDestinationNames = (tripData, destinationData, userID) => {
     return places;
 }
 
-const getDestinationIDs = (tripData, userID) => {
+const getNonVisitedDestinationIDs = (tripData, userID) => {
     let allids = [];
     tripData.filter(trip => trip.userID !== userID).map(trip => trip.destinationID).sort((a,b) => a-b).forEach(id => {
         if (!allids.includes(id)) {
@@ -50,10 +50,34 @@ const getRandomUser = (travelerData) => {
     return travelerData[randomIndex]
 }
 
+const getDestinationInfo = (destinationData, destinationIDs) => {
+    let destinations = [];
+    destinationIDs.forEach(id => {
+       let location = destinationData.find(destination => destination.id === id)
+        destinations.push({image: location.image, alt: location.alt, destination: location.destination, 
+            lodgingCost: location.estimatedLodgingCostPerDay, flightCost: location.estimatedFlightCostPerPerson})
+    })
+    return destinations
+}
+const findDestinationInfo = (destinationData, destinationName) => {
+    return destinationData.find(destination => destination.destination === destinationName)
+}
+
+const calculateTripCost = (duration, travelers, destinationName, destinationData) => {
+   const singleDestinationInfo = findDestinationInfo(destinationData, destinationName)
+   let totalCost = {};
+    totalCost.flightCost = singleDestinationInfo.estimatedFlightCostPerPerson * travelers;
+    totalCost.lodgingCost = singleDestinationInfo.estimatedLodgingCostPerDay * duration;
+    return totalCost
+}
+
 export {
-    calculateTripCost,
+    calculatePastTripCosts,
     getPastUserTrips,
     getRandomUser,
-    getDestinationNames,
-    getDestinationIDs
+    getVisitedDestinationNames,
+    getNonVisitedDestinationIDs,
+    getDestinationInfo,
+    findDestinationInfo,
+    calculateTripCost
 }
