@@ -70,8 +70,27 @@ nav {
   width: 60vw;
   align-content: center;
   overflow-x: hidden;
-  .book-trip-form {
-    transform: translate(30%)
+
+}
+.form-estimate-wrapper {
+  display: flex;
+  justify-content: space-around;
+  #book-trip-form {
+    transform: translate(23%)
+  }
+  .breakdown {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: translate(-10%,-5%);
+    hr {
+      width: 15vw;
+    }
+    h3 {
+      margin: 0;
+      padding: 0;
+    }
   }
 }
 
