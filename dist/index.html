@@ -32,18 +32,26 @@
             <button class="glide__arrow glide__arrow--left" data-glide-dir="<">prev</button>
             <button class="glide__arrow glide__arrow--right" data-glide-dir=">">next</button>
           </div>
-      </div>  
-      <form class="book-trip-form">
-        <label for="destinations">Destination: </label>
-        <select name="destinations" id="destinations"></select>
-        <label for="trip-date">Trip Starting Date: </label>
-        <input type="date" id="trip-date"/><br>
-        <label for="duration">Duration of Trip: </label>
-        <input type="number" id="duration" step="1" max="31" placeholder="5"/><span style="margin-left:5px">days</span><br>
-        <label for="travelers">Number of Travelers: </label>
-        <input type="number" id="travelers" step="1" max="15" placeholder="5"/><span style="margin-left:5px">adults</span><br>
-        <button data-close-modal formmethod="dialog">Close</button><button type="submit">Submit</button>
-      </form>
+      </div>
+      <div class="form-estimate-wrapper">
+        <form id="book-trip-form">
+          <label for="destinations">Destination: </label>
+          <select name="destinations" id="destinations"></select><br>
+          <label for="trip-date">Trip Starting Date: </label>
+          <input type="date" name="date" id="trip-date" min=""/><br>
+          <label for="duration">Duration of Trip: </label>
+          <input type="number" name="duration" id="duration" step="1" min="1" max="31" placeholder="5"/><span style="margin-left:5px">days</span><br>
+          <label for="travelers">Number of Travelers: </label>
+          <input type="number" name="travelers" id="travelers" step="1" min="1" max="15" placeholder="5"/><span style="margin-left:5px">adults</span><br>
+          <input type="submit" id="book-trip-btn"></input><button data-close-modal formmethod="dialog">Close</button>
+        </form>
+        <section class="breakdown">
+          <h3>Breakdown</h3>
+          <hr>
+          <p>Estimated Total Flight Cost: </p>
+          <p>Estimated Total Lodging Cost: </p>
+        </section>
+    </div> 
     </dialog>
   </section>
 
