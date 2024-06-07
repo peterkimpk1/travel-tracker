@@ -1,5 +1,5 @@
-import {getRandomUser, calculateTripCost, getPastUserTrips, getVisitedDestinationNames, getNonVisitedDestinationIDs, 
-    getDestinationInfo} from './userFunctions.js'
+import {getRandomUser, calculatePastTripCosts, getPastUserTrips, getVisitedDestinationNames, getNonVisitedDestinationIDs, 
+    getDestinationInfo, calculateTripCost} from './userFunctions.js'
 import Glide from '@glidejs/glide';
 
 let currentUserId;
@@ -10,12 +10,16 @@ const lastTripDate = document.querySelector('.last-trip-date');
 const openModalBtn = document.querySelector("[data-open-modal]");
 const closeModalBtn = document.querySelector("[data-close-modal]");
 const modal = document.querySelector("[data-modal]")
-// const bookTripForm = document.querySelector('.book-trip-form')
+const bookTripForm = document.querySelector('#book-trip-form')
 const modalSlides = document.querySelector('.glide__slides')
 const destinationSelection = document.getElementById('destinations')
+const tripDate = document.querySelector('#trip-date')
+const bookTripBtn = document.getElementById('book-trip-btn')
+
 
 window.addEventListener('load',() => {
     fetchUserData()
+    setTripDate()
 })
 
 openModalBtn.addEventListener('click',() =>{
@@ -27,6 +31,10 @@ openModalBtn.addEventListener('click',() =>{
 // })
 closeModalBtn.addEventListener('click', () => {
     modal.close()
+})
+bookTripForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+    postTripEstimate()
 })
 const APICall = (urlEndPoint, options) => {
     return fetch(`http://localhost:3001/api/v1/${urlEndPoint}`,options).then(response => response.json())
@@ -47,7 +55,7 @@ const fetchUserData = () => {
        const allDestinationInfo = getDestinationInfo(e[2].destinations,allDestinationIDs)
        createGlideSlides(allDestinationInfo)
        createDestinationSelections(allDestinationInfo)
-       const userCost = calculateTripCost(e[1].trips,e[2].destinations,user.id)
+       const userCost = calculatePastTripCosts(e[1].trips,e[2].destinations,user.id)
        const userTrips = getVisitedDestinationNames(e[1].trips,e[2].destinations,user.id)
        const sortedUserDates = getPastUserTrips(e[1].trips,user.id).map(trip => new Date(trip.date)).sort((a,b) => a-b);
        inputWelcomeMessage(user)
@@ -97,3 +105,30 @@ const createDestinationSelections = (destinations) => {
         destinationSelection.appendChild(option)
     })
 }
+
+const postTripEstimate = () => {
+    const formData = new FormData(bookTripForm)
+    const destination = formData.get('destinations')
+    const duration = formData.get('duration')
+    const travelers = formData.get('travelers')
+    Promise.all([APICall('destinations')]).then(e => {
+        let totalCost = calculateTripCost(duration, travelers, destination, e[0].destinations)
+        console.log(totalCost)
+    })
+
+}
+
+const setTripDate = () => {
+    const date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear()
+    if (month.toString.length === 1) {
+        month = '0' + (date.getMonth() + 1)
+    }
+    if (day.toString.length === 1) {
+        day = '0' + (date.getDate())
+    }
+    tripDate.setAttribute("min",`${year}-${month}-${day}`)
+}
+
