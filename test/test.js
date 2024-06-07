@@ -4,7 +4,7 @@ import trips from '../src/test-data/sample-trips.js';
 import travelers from '../src/test-data/sample-travelers.js';
 import destinations from '../src/test-data/sample-destinations.js';
 const {calculatePastTripCosts, getPastUserTrips, getVisitedDestinationNames, getNonVisitedDestinationIDs, 
-  getDestinationInfo, findDestinationInfo, calculateTotalTripCost} = require('../src/userFunctions.js')
+  getDestinationInfo, findDestinationInfo, calculateTotalTripCost, findLastTripId} = require('../src/userFunctions.js')
 
 describe('calculatePastTripCosts', function() {
   var tripData, destinationData;
@@ -159,7 +159,16 @@ describe('calculateTotalTripCost', () => {
     const duration = 5;
     const travelers = 5;
     const totalCost = calculateTotalTripCost(duration, travelers, destinationName, destinationData)
-    expect(totalCost.flightCost).to.equal(1375)
-    expect(totalCost.lodgingCost).to.equal(790)
+    expect(totalCost.flightCost).to.equal(1512.5)
+    expect(totalCost.lodgingCost).to.equal(869)
   })
 })
+
+describe('findLastTripId', () => {
+  it ('should find the last trip id available', () => {
+    const tripData = trips.trips;
+    const lastId = findLastTripId(tripData);
+    expect(lastId).to.equal(35)
+  })
+})
+
