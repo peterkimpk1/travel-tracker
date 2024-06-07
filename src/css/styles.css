@@ -1,6 +1,24 @@
 body {
   overflow-x: hidden;
 }
+button, input[type="submit"] {
+    z-index: 2;
+    color: #fff;
+    text-transform: uppercase;
+    padding: 9px 12px;
+    background-color: coral;
+    border: 2px solid rgba(255, 255, 255, .5);
+    border-radius: 4px;
+    box-shadow: 0 .25em .5em 0 rgba(0, 0, 0, .1);
+    text-shadow: 0 .25em .5em rgba(0, 0, 0, .1);
+    transition: opacity 150ms ease, border 300ms ease-in-out;
+    opacity: 1;
+    line-height: 1;
+}
+
+button:hover, input[type="submit"]:hover {
+  border-color: #fff;
+}
 
 nav {
   display: flex;
@@ -35,11 +53,13 @@ nav {
     button {
       border-radius: 5px;
       padding: 15px 32px;
-      transition-duration: 0.4s;
+      font-size: 17px;
     }
     button:hover {
       cursor: pointer;
-      background-color: #04AA6D;
+      box-shadow: 0 .5em .75em 0 rgba(0, 0, 0, .1);
+      text-shadow: 0 .5em .75em rgba(0, 0, 0, .1);
+      transition: opacity 150ms ease, border 300ms ease-in-out;
     }
   }
 }
@@ -65,18 +85,50 @@ nav {
   }
 }
 /*modal*/
+dialog::backdrop {
+  background-color:hsl(234, 44%, 66%, .2);
+}
 .modal {
-  height: 75vh;
+  height: 85vh;
   width: 60vw;
   align-content: center;
   overflow-x: hidden;
-
+  [data-close-modal] {
+    float: right;
+    transform: translate(-20%,-10%);
+    padding: 5px 20px;
+    border-radius: 5px;
+    font-size: 25px;
+  }
+  [data-close-modal]:hover {
+    cursor: pointer;
+  }
 }
 .form-estimate-wrapper {
   display: flex;
   justify-content: space-around;
   #book-trip-form {
-    transform: translate(23%)
+    transform: translate(23%);
+    input[type="number"] {
+      width: 40px;
+    }
+    input[type="submit"]:hover{
+      cursor: pointer;
+    }
+    select,input {
+      margin: 10px 0 10px 0;
+    }
+    select,input:focus-within {
+      border-color: coral;
+    }
+    label {
+      font-size: 18px;
+    }
+    #book-trip-btn {
+      float: right;
+      transform: translate(550%,80%);
+      z-index: 999;
+    }
   }
   .breakdown {
     display: flex;
@@ -88,21 +140,23 @@ nav {
       width: 15vw;
     }
     h3 {
+      align-self: center;
       margin: 0;
       padding: 0;
+    }
+    p.estimate-flight-cost {
+      margin: 0 14px 10px 0;
+    }
+    p.total-estimate {
+      margin: 5px 25px 0 0 ;
+      font-size: 20px;
+      border: 0;
     }
   }
 }
 
-label,input {
-  margin: 4px 0 4px 0;
-}
-input[type="number"] {
-  width: 40px;
-}
-dialog::backdrop {
-  background-color:hsl(234, 44%, 66%, .2);
-}
+
+
 .glide {
   height: 45vh;
   display: flex;
@@ -122,12 +176,15 @@ dialog::backdrop {
     margin: 0;
   }
   button {
-    background-color: hsl(234, 44%, 66%, .5);
+    background-color: coral;
+    opacity: 0.9;
   }
   button.glide__arrow--left {
     margin-left: 50px;
+    border-radius: 5px;
   }
   button.glide__arrow--right {
     margin-right: 50px;
+    border-radius: 5px;
   }
 }

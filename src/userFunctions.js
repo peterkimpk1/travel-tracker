@@ -1,11 +1,20 @@
 const calculatePastTripCosts = (tripData, destinationData, userID) =>  {
-    let totals = tripData.filter(trip => trip.userID === userID).reduce((acc,trip) => {
+    var latestYear;
+    let filteredTrips = tripData.filter(trip => trip.userID === userID)
+    latestYear = new Date(filteredTrips[0].date).getFullYear()
+    filteredTrips.forEach(trip => {
+        if (latestYear < new Date(trip.date).getFullYear()) {
+            latestYear = new Date(trip.date).getFullYear()
+        }
+    })
+    let totals = filteredTrips.reduce((acc,trip) => {
         if (!acc.totalLodgingCost && !acc.totalFlightCost) {
             acc.totalLodgingCost = 0;
             acc.totalFlightCost = 0;
         }
+        let currentYear = new Date(trip.date).getFullYear()
         destinationData.forEach(destination => {
-            if(trip.destinationID === destination.id) {
+            if(trip.destinationID === destination.id && latestYear === currentYear) {
                 acc.totalLodgingCost += destination.estimatedLodgingCostPerDay * 1.1 * trip.duration
                 acc.totalFlightCost += destination.estimatedFlightCostPerPerson * 1.1 * trip.travelers
             }
@@ -14,6 +23,7 @@ const calculatePastTripCosts = (tripData, destinationData, userID) =>  {
     },{})
     totals.totalLodgingCost = +totals.totalLodgingCost.toFixed(2)
     totals.totalFlightCost = +totals.totalFlightCost.toFixed(2)
+    totals.latestYear = latestYear
     return totals 
 }
 const getPastUserTrips = (tripData, userID) => {
@@ -63,12 +73,18 @@ const findDestinationInfo = (destinationData, destinationName) => {
     return destinationData.find(destination => destination.destination === destinationName)
 }
 
-const calculateTripCost = (duration, travelers, destinationName, destinationData) => {
+const calculateTotalTripCost = (duration, travelers, destinationName, destinationData) => {
    const singleDestinationInfo = findDestinationInfo(destinationData, destinationName)
    let totalCost = {};
-    totalCost.flightCost = singleDestinationInfo.estimatedFlightCostPerPerson * travelers;
-    totalCost.lodgingCost = singleDestinationInfo.estimatedLodgingCostPerDay * duration;
+    totalCost.flightCost = singleDestinationInfo.estimatedFlightCostPerPerson * travelers * 1.1;
+    totalCost.lodgingCost = singleDestinationInfo.estimatedLodgingCostPerDay * duration * 1.1;
+    totalCost.flightCost = +totalCost.flightCost.toFixed(2)
+    totalCost.lodgingCost = +totalCost.lodgingCost.toFixed(2)
     return totalCost
+}
+
+const findLastTripId = (tripData) => {
+    return tripData[tripData.length-1].id
 }
 
 export {
@@ -79,5 +95,6 @@ export {
     getNonVisitedDestinationIDs,
     getDestinationInfo,
     findDestinationInfo,
-    calculateTripCost
+    calculateTotalTripCost,
+    findLastTripId,
 }
