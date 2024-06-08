@@ -18,6 +18,9 @@ button, input[type="submit"] {
 
 button:hover, input[type="submit"]:hover {
   border-color: #fff;
+  cursor: pointer;
+  box-shadow: 0 .5em .75em 0 rgba(0, 0, 0, .1);
+  text-shadow: 0 .5em .75em rgba(0, 0, 0, .1);
 }
 
 nav {
@@ -55,12 +58,6 @@ nav {
       padding: 15px 32px;
       font-size: 17px;
     }
-    button:hover {
-      cursor: pointer;
-      box-shadow: 0 .5em .75em 0 rgba(0, 0, 0, .1);
-      text-shadow: 0 .5em .75em rgba(0, 0, 0, .1);
-      transition: opacity 150ms ease, border 300ms ease-in-out;
-    }
   }
 }
 .summary-section {
@@ -84,6 +81,26 @@ nav {
     height: 50vh;
   }
 }
+.glide {
+  height: 45vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    align-content: center;
+    aspect-ratio: 16/9;
+    height: 30vh;
+  }
+  button {
+    background-color: coral;
+  }
+  h5 {
+    font-size: 35px;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+  }
+}
 /*modal*/
 dialog::backdrop {
   background-color:hsl(234, 44%, 66%, .2);
@@ -102,7 +119,26 @@ dialog::backdrop {
   }
   [data-close-modal]:hover {
     cursor: pointer;
-  }
+  };
+  .glide {
+    margin-bottom: 10px;
+    img {
+      height: 40vh;
+      transform: translate(30%)
+    }
+    button {
+      opacity: 0.9;
+      background-color: coral;
+    }
+    button.glide__arrow--left {
+      margin-left: 50px;
+      border-radius: 5px;
+    }
+    button.glide__arrow--right {
+      margin-right: 50px;
+      border-radius: 5px;
+    }
+  } 
 }
 .form-estimate-wrapper {
   display: flex;
@@ -156,35 +192,3 @@ dialog::backdrop {
 }
 
 
-
-.glide {
-  height: 45vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 10px;
-  img {
-    align-content: center;
-    aspect-ratio: 16/9;
-    height: 40vh;
-    transform: translate(30%)
-  }
-  h5 {
-    font-size: 35px;
-    text-align: center;
-    padding: 0;
-    margin: 0;
-  }
-  button {
-    background-color: coral;
-    opacity: 0.9;
-  }
-  button.glide__arrow--left {
-    margin-left: 50px;
-    border-radius: 5px;
-  }
-  button.glide__arrow--right {
-    margin-right: 50px;
-    border-radius: 5px;
-  }
-}
