@@ -4,9 +4,38 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
   <title>Travel Tracker</title>
 </head>
 <body>
+  <section class="login-main-page">
+    <header>
+      <h1>DEPARTURES</h1>
+      <div class="display-tag-wrapper">
+        <ul class="display-tags">
+          <li>TIME</li>
+          <li>DESTINATION</li>
+          <li>FLIGHT</li>
+          <li>GATE</li>
+          <li>REMARKS</li>
+        </ul>
+      </div>
+    </header>
+  </section>
+  <div class="login-page-background">
+      <section class="login-page-wrapper">
+        <form type="submit">
+          <label for="username-input">Username:</label>
+          <input name="username" type="text" id="username-input"/><br>
+          <label for="password-input">Password:</label>
+          <input name="password" type="text" id="password-input"/>
+          <input type="submit" value="Login">
+        </form>
+      </section>
+  </div>
+  <section class="dashboard-page" hidden>
   <nav>
     <div class="nav-title">Travel Tracker</div>
     <ul class="nav-bar-menus">
@@ -59,10 +88,7 @@
     </div> 
     </dialog>
   </section>
-
-
   <section class="summary-section">Summary
-
     <p class="user-total-costs"></p>
   </section>
   <section class="trips-section">
@@ -105,7 +131,7 @@
       </div>
     </div>
   </section>
-
+</section>
   <script src="bundle.js"></script>
 
 </body>
