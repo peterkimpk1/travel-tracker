@@ -107,7 +107,7 @@ const createGlideSlides = (glideSlidesElement, destinations) => {
     destinations.forEach((destinations) => {
         glideSlidesElement.innerHTML += `
         <li class="glide__slide">
-        <h5>${destinations.destination}</h5>
+        <h4>${destinations.destination}</h4>
         <img src="${destinations.image}" alt="${destinations.alt}"/><br>
         </li>` 
     })

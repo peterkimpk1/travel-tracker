@@ -4,23 +4,18 @@ body {
 button, input[type="submit"] {
     z-index: 2;
     color: #fff;
-    text-transform: uppercase;
     padding: 9px 12px;
-    background-color: coral;
+    background: linear-gradient(0deg, rgba(0,172,238,1)0%, rgba(2,126,251,1) 100%);
     border: 2px solid rgba(255, 255, 255, .5);
-    border-radius: 4px;
+    border-radius: 5px;
     box-shadow: 0 .25em .5em 0 rgba(0, 0, 0, .1);
-    text-shadow: 0 .25em .5em rgba(0, 0, 0, .1);
-    transition: opacity 150ms ease, border 300ms ease-in-out;
-    opacity: 1;
-    line-height: 1;
+    transition: all 0.4s ease;
+    outline: none;
 }
 
 button:hover, input[type="submit"]:hover {
   border-color: #fff;
   cursor: pointer;
-  box-shadow: 0 .5em .75em 0 rgba(0, 0, 0, .1);
-  text-shadow: 0 .5em .75em rgba(0, 0, 0, .1);
 }
 
 nav {
@@ -79,6 +74,10 @@ nav {
     border-radius: 10px;
     width: 30vw;
     height: 50vh;
+    h3 {
+      font-size: 30px;
+      margin: 10px 0 30px 0;
+    };
   }
 }
 .glide {
@@ -86,16 +85,14 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
+  transform: translate(1%,-7%);
   img {
     align-content: center;
     aspect-ratio: 16/9;
-    height: 30vh;
+    height: 25vh;
   }
-  button {
-    background-color: coral;
-  }
-  h5 {
-    font-size: 35px;
+  h4 {
+    font-size: 25px;
     text-align: center;
     padding: 0;
     margin: 0;
@@ -112,7 +109,7 @@ dialog::backdrop {
   overflow-x: hidden;
   [data-close-modal] {
     float: right;
-    transform: translate(-20%,-10%);
+    transform: translate(-30%,-150%);
     padding: 5px 20px;
     border-radius: 5px;
     font-size: 25px;
@@ -123,12 +120,12 @@ dialog::backdrop {
   .glide {
     margin-bottom: 10px;
     img {
-      height: 40vh;
-      transform: translate(30%)
+      height: 45vh;
+      transform: translate(25%)
     }
     button {
-      opacity: 0.9;
-      background-color: coral;
+      text-transform: capitalize;
+      font-size: 18px;
     }
     button.glide__arrow--left {
       margin-left: 50px;
@@ -137,6 +134,9 @@ dialog::backdrop {
     button.glide__arrow--right {
       margin-right: 50px;
       border-radius: 5px;
+    }
+    h4 {
+      font-size: 35px;
     }
   } 
 }
@@ -152,7 +152,7 @@ dialog::backdrop {
       cursor: pointer;
     }
     select,input {
-      margin: 10px 0 10px 0;
+      margin: 15px 0 15px 0;
     }
     select,input:focus-within {
       border-color: coral;
@@ -160,9 +160,14 @@ dialog::backdrop {
     label {
       font-size: 18px;
     }
+    #calculate-estimate-btn {
+      font-size: 18px;
+      transform: translate(0%, 10%)
+    }
     #book-trip-btn {
+      font-size: 18px;
       float: right;
-      transform: translate(550%,80%);
+      transform: translate(510%,10%);
       z-index: 999;
     }
   }
@@ -180,6 +185,9 @@ dialog::backdrop {
       margin: 0;
       padding: 0;
     }
+    p {
+      font-size: 18px;
+    }
     p.estimate-flight-cost {
       margin: 0 14px 10px 0;
     }
@@ -187,6 +195,7 @@ dialog::backdrop {
       margin: 5px 25px 0 0 ;
       font-size: 20px;
       border: 0;
+      line-height: 2;
     }
   }
 }
