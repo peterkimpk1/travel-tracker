@@ -55,11 +55,6 @@ const getNonVisitedDestinationIDs = (tripData, userID) => {
     return allids;
 }
 
-const getRandomUser = (travelerData) => {
-    const randomIndex = Math.floor(Math.random() * travelerData.length)
-    return travelerData[randomIndex]
-}
-
 const getDestinationInfo = (destinationData, destinationIDs) => {
     let destinations = [];
     destinationIDs.forEach(id => {
@@ -90,7 +85,6 @@ const findLastTripId = (tripData) => {
 export {
     calculatePastTripCosts,
     getPastUserTrips,
-    getRandomUser,
     getVisitedDestinationNames,
     getNonVisitedDestinationIDs,
     getDestinationInfo,
