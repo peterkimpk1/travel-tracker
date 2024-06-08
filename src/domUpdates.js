@@ -5,23 +5,26 @@ import Glide from '@glidejs/glide';
 let currentTripId;
 let currentUserId;
 let singleDestinationInfo;
+let pendingTrips = [];
 const welcomeHeader = document.querySelector('.welcome-message')
 const userCosts = document.querySelector('.user-total-costs');
 const userPastTrips = document.querySelector('.user-past-trips');
+const userPendingTrips = document.querySelector('.user-pending-trips');
 const lastTripDate = document.querySelector('.last-trip-date');
 const openModalBtn = document.querySelector("[data-open-modal]");
 const closeModalBtn = document.querySelector("[data-close-modal]");
 const modal = document.querySelector("[data-modal]")
 const bookTripForm = document.querySelector('#book-trip-form')
-const modalSlides = document.querySelector('.glide__slides')
+const modalSlides = document.getElementById('all-destinations')
+const pastTripSlides = document.getElementById('past-destinations')
 const destinationSelection = document.getElementById('destinations')
 const tripDate = document.querySelector('#trip-date')
 const bookTripBtn = document.getElementById('book-trip-btn')
 const totalEstimateLine = document.getElementById('total-line')
 const totalEstimate = document.querySelector('.total-estimate')
-const breakdownSection = document.querySelector('.breakdown')
 const estimatedLodgeCost = document.querySelector('.estimate-lodge-cost')
 const estimatedFlightCost =  document.querySelector('.estimate-flight-cost')
+const sliders = document.querySelectorAll('.glide')
 window.addEventListener('load',() => {
     fetchUserData()
     setTripDate()
@@ -30,11 +33,9 @@ window.addEventListener('load',() => {
 
 openModalBtn.addEventListener('click',() =>{
     modal.showModal()
-    new Glide('.glide').mount()
+    new Glide(sliders[0]).mount()
 })
-// modal.addEventListener('click', () => {
 
-// })
 closeModalBtn.addEventListener('click', () => {
     modal.close()
 })
@@ -55,20 +56,24 @@ const APICall = (urlEndPoint, options) => {
 const fetchUserData = () => {
     Promise.all([APICall('travelers'), APICall('trips'),APICall('destinations')])
     .then(e => {
-       let user = getRandomUser(e[0].travelers)
+       const user = getRandomUser(e[0].travelers)
        currentTripId = findLastTripId(e[1].trips);
        currentUserId = user.id;
        const allDestinationIDs = getNonVisitedDestinationIDs(e[1].trips,0)
        const allDestinationInfo = getDestinationInfo(e[2].destinations,allDestinationIDs)
-       createGlideSlides(allDestinationInfo)
+       createGlideSlides(modalSlides, allDestinationInfo)
        createDestinationSelections(allDestinationInfo)
        const userCost = calculatePastTripCosts(e[1].trips,e[2].destinations,user.id)
        const userTrips = getVisitedDestinationNames(e[1].trips,e[2].destinations,user.id)
        const sortedUserDates = getPastUserTrips(e[1].trips,user.id).map(trip => new Date(trip.date)).sort((a,b) => a-b);
+       const userDestinationIDs = getPastUserTrips(e[1].trips,user.id).map(trip => trip.destinationID);
+       const userDestinationInfo = getDestinationInfo(e[2].destinations,userDestinationIDs)
+       createGlideSlides(pastTripSlides,userDestinationInfo)
        inputWelcomeMessage(user)
        inputLastTripDate(sortedUserDates[sortedUserDates.length - 1])
        inputTotalCosts(userCost.totalFlightCost,userCost.totalLodgingCost)
        inputPastTrips(userTrips)
+       new Glide(sliders[1]).mount()
     }).catch(err => alert('Could not fetch user data..'))
 }
 
@@ -80,7 +85,13 @@ const inputWelcomeMessage = (user) => {
 const inputLastTripDate = (date) => {
     lastTripDate.innerText = `Your last trip date was ${date.getMonth() +1}/${date.getDate()}/${date.getFullYear()}`
 }
-
+const inputPendingTrip = (pendingTripInfos) => {
+    userPendingTrips.innerHTML = ""
+    userPendingTrips.innerHTML = `Your pending trip location(s): <br>`
+    pendingTripInfos.forEach(trip => {
+        userPendingTrips.innerHTML += `<br><strong>${trip.destination}</strong> <hr><p>Trip Date: ${trip.date}&nbsp;&nbsp;Duration: ${trip.duration} days &nbsp;&nbsp;Status: Pending </p><hr>`
+    })
+}
 const inputTotalCosts = (flightCost,lodgingCost) => {
     userCosts.innerHTML = `You have spent a total of $${flightCost} on flights. <br>You have spent a total of $${lodgingCost} on lodging.`
 }
@@ -92,9 +103,9 @@ const inputPastTrips = (trips) => {
     })
 }
 
-const createGlideSlides = (destinations) => {
+const createGlideSlides = (glideSlidesElement, destinations) => {
     destinations.forEach((destinations) => {
-        modalSlides.innerHTML += `
+        glideSlidesElement.innerHTML += `
         <li class="glide__slide">
         <h5>${destinations.destination}</h5>
         <img src="${destinations.image}" alt="${destinations.alt}"/><br>
@@ -142,7 +153,10 @@ const postTripRequest = () => {
           'Content-Type': 'application/json'
         }
       };
-   APICall('trips',options).then(e => console.log(e)).catch(err => alert('did not work'))
+   APICall('trips',options).then(e => e).catch(err => alert('did not work'))
+   pendingTrips.push({date: formData.date, duration: +formData.duration, 
+    travelers: +formData.travelers, destination: formData.destination})
+   inputPendingTrip(pendingTrips)
 }
 
 const postTripEstimate = () => {
