@@ -4,8 +4,8 @@
 body {
   overflow-x: hidden;
   margin: 0;
-  font-family: 'Averia Serif Libre';
 }
+
 button, input[type="submit"] {
     z-index: 2;
     color: #fff;
@@ -205,4 +205,6 @@ dialog::backdrop {
   }
 }
 
-
+.hidden {
+  display: none;
+}
