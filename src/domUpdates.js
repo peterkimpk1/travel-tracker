@@ -1,4 +1,4 @@
-import {getRandomUser, calculatePastTripCosts, getPastUserTrips, getVisitedDestinationNames, getNonVisitedDestinationIDs, 
+import {calculatePastTripCosts, getPastUserTrips, getVisitedDestinationNames, getNonVisitedDestinationIDs, 
     getDestinationInfo, calculateTotalTripCost, findLastTripId, findDestinationInfo} from './userFunctions.js'
 import Glide from '@glidejs/glide';
 
@@ -25,8 +25,19 @@ const totalEstimate = document.querySelector('.total-estimate')
 const estimatedLodgeCost = document.querySelector('.estimate-lodge-cost')
 const estimatedFlightCost =  document.querySelector('.estimate-flight-cost')
 const sliders = document.querySelectorAll('.glide')
+const loginPageHeader = document.querySelector('.login-page-header');
+const loginPage = document.querySelector('.login-page-background')
+const dashboardPage = document.querySelector('.dashboard-page');
+const loginForm = document.querySelector('.login')
+const failMessage = document.querySelector('.fail-message')
+const successMessage = document.querySelector('.success-message');
+
+loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    togglePage();
+})
+
 window.addEventListener('load',() => {
-    fetchUserData()
     setTripDate()
     toggleTotalEstimate('hidden')
 })
@@ -48,17 +59,39 @@ bookTripForm.addEventListener('submit', (e) => {
     e.preventDefault()
     postTripEstimate()
 })
+const togglePage = () => {
+    const formData = new FormData(loginForm);
+    const usernameInput = formData.get('username');
+    const passwordInput = formData.get('password');
+    for (var i = 0; i < 51; i++) {
+        if (usernameInput === `traveler${i}` && passwordInput === 'travel') {
+            successMessage.classList.remove('hidden')
+            failMessage.classList.add('hidden')
+            currentUserId = i;
+            setTimeout(() => showDashboardPage(),3000)
+            return;
+        }
+        else {
+            failMessage.classList.remove('hidden')
+        }
+    }
+}
+const showDashboardPage = () => {
+    fetchUserData()
+    loginPageHeader.classList.add('hidden');
+    loginPage.classList.add('hidden');
+    dashboardPage.classList.remove('hidden');
+}
 
 const APICall = (urlEndPoint, options) => {
     return fetch(`http://localhost:3001/api/v1/${urlEndPoint}`,options).then(response => response.json())
  }
 
 const fetchUserData = () => {
-    Promise.all([APICall('travelers'), APICall('trips'),APICall('destinations')])
+    Promise.all([APICall('travelers'), APICall('trips'),APICall('destinations'),APICall(`travelers/${currentUserId}`)])
     .then(e => {
-       const user = getRandomUser(e[0].travelers)
+       const user = e[3]
        currentTripId = findLastTripId(e[1].trips);
-       currentUserId = user.id;
        const allDestinationIDs = getNonVisitedDestinationIDs(e[1].trips,0)
        const allDestinationInfo = getDestinationInfo(e[2].destinations,allDestinationIDs)
        createGlideSlides(modalSlides, allDestinationInfo)
