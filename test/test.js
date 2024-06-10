@@ -4,7 +4,7 @@ import trips from '../src/test-data/sample-trips.js';
 import travelers from '../src/test-data/sample-travelers.js';
 import destinations from '../src/test-data/sample-destinations.js';
 const {calculatePastTripCosts, getPastUserTrips, getVisitedDestinationNames, getNonVisitedDestinationIDs, 
-  getDestinationInfo, findDestinationInfo, calculateTotalTripCost, findLastTripId} = require('../src/userFunctions.js')
+  getDestinationInfo, findDestinationInfo, calculateTotalTripCost, findLastTripId, getPendingUserTrips} = require('../src/userFunctions.js')
 
 describe('calculatePastTripCosts', function() {
   var tripData, destinationData;
@@ -168,7 +168,39 @@ describe('findLastTripId', () => {
   it ('should find the last trip id available', () => {
     const tripData = trips.trips;
     const lastId = findLastTripId(tripData);
-    expect(lastId).to.equal(35)
+    expect(lastId).to.equal(38)
   })
 })
 
+describe('getPendingUserTrips', () => {
+  it ('should return only a user\s pending trips', () => {
+    const destinationData = destinations.destinations
+    const tripData = trips.trips;
+    const userID = 12;
+    const pendingTrips = getPendingUserTrips(destinationData, tripData,userID);
+    expect(pendingTrips).to.deep.equal([
+      {
+        "id": 36,
+        "userID": 12,
+        "destinationID": 18,
+        "destinationName": "Copenhagen, Denmark",
+        "travelers": 3,
+        "date": "2024/06/06",
+        "duration": 8,
+        "status": "pending",
+        "suggestedActivities": []
+      },
+      {
+        "id": 38,
+        "userID": 12,
+        "destinationID": 41,
+        "destinationName": "Seoul, South Korea",
+        "travelers": 1,
+        "date": "2024/06/20",
+        "duration": 5,
+        "status": "pending",
+        "suggestedActivities": []
+      }
+    ])
+  })
+})
