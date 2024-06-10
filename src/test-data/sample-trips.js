@@ -348,6 +348,36 @@ export default { trips: [
       "duration": 8,
       "status": "approved",
       "suggestedActivities": []
-    }
+    },
+    {
+      "id": 36,
+      "userID": 12,
+      "destinationID": 18,
+      "travelers": 3,
+      "date": "2024/06/06",
+      "duration": 8,
+      "status": "pending",
+      "suggestedActivities": []
+    },
+    {
+      "id": 37,
+      "userID": 15,
+      "destinationID": 20,
+      "travelers": 3,
+      "date": "2024/06/12",
+      "duration": 8,
+      "status": "pending",
+      "suggestedActivities": []
+    },
+    {
+      "id": 38,
+      "userID": 12,
+      "destinationID": 41,
+      "travelers": 1,
+      "date": "2024/06/20",
+      "duration": 5,
+      "status": "pending",
+      "suggestedActivities": []
+    },
 ]
 }
