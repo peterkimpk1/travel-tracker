@@ -26,7 +26,7 @@ button:hover, input[type="submit"]:hover {
   cursor: pointer;
 }
 .background-wrapper {
-  background-image: url('../images/background3.jpg');
+  background-image: url('../images/background5.jpg');
   background-position: center;
   background-size: cover;
 }
@@ -126,18 +126,21 @@ nav {
     text-align: center;
     border-radius: 10px;
     width: 30vw;
-    height: 50vh;
+    height: 60vh;
     h3 {
       font-size: 30px;
       margin: 10px 0 30px 0;
     };
-    .user-pending-trips-title{
+    .user-pending-trips-title, .user-past-trips-title{
       font-size: 25px;
       margin: 0;
     }
     .pending-status {
-      font-weight: 400;
+      font-weight: 500;
       color: rgb(249,216,0)
+    }
+    .user-past-trips {
+      line-height: 1.5;
     }
   }
 
