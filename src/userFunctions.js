@@ -1,6 +1,6 @@
 const calculatePastTripCosts = (tripData, destinationData, userID) =>  {
     var latestYear;
-    let filteredTrips = tripData.filter(trip => trip.userID === userID)
+    let filteredTrips = tripData.filter(trip => trip.userID === userID && trip.status === 'approved')
     latestYear = new Date(filteredTrips[0].date).getFullYear()
     filteredTrips.forEach(trip => {
         if (latestYear < new Date(trip.date).getFullYear()) {
@@ -26,6 +26,17 @@ const calculatePastTripCosts = (tripData, destinationData, userID) =>  {
     totals.latestYear = latestYear
     return totals 
 }
+
+const getPendingUserTrips = (destinationData, tripData, userID) => {
+    let pendingTrips = tripData.filter(trip => trip.status === 'pending' && trip.userID === userID)
+    return pendingTrips.map(trip => {
+        var destinationInfo = destinationData.find(destination => {
+            return destination.id === trip.destinationID
+        })
+        return {destinationName: destinationInfo.destination, ...trip}
+    })
+}
+
 const getPastUserTrips = (tripData, userID) => {
    return tripData.reduce((userTrips, trip) => {
         if(trip.userID === userID) {
@@ -85,6 +96,7 @@ const findLastTripId = (tripData) => {
 export {
     calculatePastTripCosts,
     getPastUserTrips,
+    getPendingUserTrips,
     getVisitedDestinationNames,
     getNonVisitedDestinationIDs,
     getDestinationInfo,
