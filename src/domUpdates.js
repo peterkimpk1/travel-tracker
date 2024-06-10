@@ -68,7 +68,7 @@ const togglePage = () => {
             successMessage.classList.remove('hidden')
             failMessage.classList.add('hidden')
             currentUserId = i;
-            setTimeout(() => showDashboardPage(),3000)
+            setTimeout(() => showDashboardPage(),2000)
             return;
         }
         else {
@@ -122,11 +122,13 @@ const inputPendingTrip = (pendingTripInfos) => {
     userPendingTrips.innerHTML = ""
     userPendingTrips.innerHTML = `Your pending trip location(s): <br>`
     pendingTripInfos.forEach(trip => {
-        userPendingTrips.innerHTML += `<br><strong>${trip.destination}</strong> <hr><p>Trip Date: ${trip.date}&nbsp;&nbsp;Duration: ${trip.duration} days &nbsp;&nbsp;Status: Pending </p><hr>`
+        userPendingTrips.innerHTML += `<br><strong>${trip.destination}</strong> 
+        <hr><p>Trip Date: ${trip.date}&nbsp;&nbsp;Duration: ${trip.duration} days &nbsp;&nbsp;Status: Pending </p><hr>`
     })
 }
 const inputTotalCosts = (flightCost,lodgingCost) => {
-    userCosts.innerHTML = `You have spent a total of $${flightCost} on flights. <br>You have spent a total of $${lodgingCost} on lodging.`
+    userCosts.innerHTML = `You have spent a total of $${flightCost} on flights. 
+    <br>You have spent a total of $${lodgingCost} on lodging.`
 }
 
 const inputPastTrips = (trips) => {
