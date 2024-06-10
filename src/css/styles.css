@@ -4,6 +4,8 @@
 body {
   overflow-x: hidden;
   margin: 0;
+  border: 0;
+  font-family: 'Averia Serif Libre';
 }
 
 button, input[type="submit"] {
@@ -12,24 +14,30 @@ button, input[type="submit"] {
     padding: 9px 12px;
     background: linear-gradient(0deg, rgba(0,172,238,1)0%, rgba(2,126,251,1) 100%);
     border: 2px solid rgba(255, 255, 255, .5);
-    border-radius: 5px;
+    border-radius: 10px;
     box-shadow: 0 .25em .5em 0 rgba(0, 0, 0, .1);
     transition: all 0.4s ease;
     outline: none;
+ 
 }
 
 button:hover, input[type="submit"]:hover {
   border-color: #fff;
   cursor: pointer;
 }
-
+.background-wrapper {
+  background-image: url('../images/background3.jpg');
+  background-position: center;
+  background-size: cover;
+}
 nav {
+  background: rgba(255,255,255, 0.5);
   display: flex;
   justify-content: space-between;
   padding: 0 10px 0 20px;
   align-items: center;
   font-size: 20px;
-  border: 1px solid black;
+  font-weight: 500;
   .nav-bar-menus{ 
     display: flex;
     justify-content: space-evenly;
@@ -42,40 +50,80 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 150px 0 150px;
-  border: 1px solid black;
+  padding: 0 40px 0 40px;
+  margin: 50px 0 50px 0;
+  .welcome-message-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(18%);
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    backdrop-filter: blur(20px);
+    box-shadow: 10px 10px 30px;
+    width: 30vw;
+    height: 150px;   
+  }
   h1 {
+    letter-spacing: 3px;
     font-size: 50px;
+    margin: 0;
   }
   .user-wrapper {
+    transform: translateY(18%);
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    backdrop-filter: blur(20px);
+    box-shadow: 10px 10px 30px;
+    width: 30vw;
+    height: 150px;
     display: flex;
     flex-direction: column;
+    align-items: center;
+
     h2 {
       font-size: 30px;
     }
     button {
-      border-radius: 5px;
-      padding: 15px 32px;
-      font-size: 17px;
+      transform: translateY(-10%);
+      border-radius: 10px;
+      padding: 15px 18px;
+      font-size: 18px;
+      width: fit-content;
+      height: fit-content;
+      align-self: center;
     }
   }
 }
 .summary-section {
-  height: 12vh;
+  display: flex;
+  justify-content: center;
   text-align: center;
   font-size: 20px;
-  border: solid 1px black;
+  align-items: center;
+  .summary-container {
+    transform: translateY(18%);
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    backdrop-filter: blur(20px);
+    box-shadow: 10px 10px 30px;
+    width: 30vw;
+    height: 150px;
+  }
 }
 
 .trips-section {
   display: flex;
-  justify-content: space-between;
-  margin: 10px 0 0 0;
+  justify-content: space-around;
+  height: 71vh;
+  margin-top: 100px;
   .section-card-wrapper {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(20px);
+    box-shadow: 10px 10px 30px;
     display: flex;
     flex-direction: column;
     text-align: center;
-    border: solid 1px black;
     border-radius: 10px;
     width: 30vw;
     height: 50vh;
@@ -84,6 +132,7 @@ nav {
       margin: 10px 0 30px 0;
     };
   }
+
 }
 .glide {
   height: 45vh;
@@ -102,16 +151,35 @@ nav {
     padding: 0;
     margin: 0;
   }
+  button {
+    border-radius: 8px;
+    font-size: 18px;
+    width: 50px;
+    height: 40px;
+  }
+  button.glide__arrow--left {
+    margin-right: 50px;
+    border-radius: 5px;
+
+  }
+  button.glide__arrow--right {
+    margin-left: 50px;
+    border-radius: 5px;
+  }
 }
 /*modal*/
 dialog::backdrop {
   background-color:hsl(234, 44%, 66%, .2);
 }
 .modal {
+  background: rgba(255,255,255, 0.5);
+  border-radius: 5px;
+  backdrop-filter: blur(20px);
   height: 85vh;
   width: 60vw;
   align-content: center;
   overflow-x: hidden;
+  border-color: none;
   [data-close-modal] {
     float: right;
     transform: translate(-30%,-150%);
@@ -129,15 +197,15 @@ dialog::backdrop {
       transform: translate(25%)
     }
     button {
-      text-transform: capitalize;
-      font-size: 18px;
+      width: 60px;
     }
     button.glide__arrow--left {
-      margin-left: 50px;
+      margin-left: 100px;
       border-radius: 5px;
+
     }
     button.glide__arrow--right {
-      margin-right: 50px;
+      margin-right: 100px;
       border-radius: 5px;
     }
     h4 {
@@ -149,6 +217,7 @@ dialog::backdrop {
   display: flex;
   justify-content: space-around;
   #book-trip-form {
+    font-weight: 300;
     transform: translate(23%);
     input[type="number"] {
       width: 40px;
@@ -159,20 +228,17 @@ dialog::backdrop {
     select,input {
       margin: 15px 0 15px 0;
     }
-    select,input:focus-within {
-      border-color: coral;
-    }
+
     label {
       font-size: 18px;
     }
     #calculate-estimate-btn {
-      font-size: 18px;
+      font-size: 15px;
       transform: translate(0%, 10%)
     }
     #book-trip-btn {
-      font-size: 18px;
-      float: right;
-      transform: translate(510%,10%);
+      font-size: 15px;
+      transform: translate(710%,10%);
       z-index: 999;
     }
   }
@@ -183,6 +249,7 @@ dialog::backdrop {
     align-items: center;
     transform: translate(-10%,-5%);
     hr {
+      background-color: black;
       width: 15vw;
     }
     h3 {
@@ -191,6 +258,7 @@ dialog::backdrop {
       padding: 0;
     }
     p {
+      font-weight: 300;
       font-size: 18px;
     }
     p.estimate-flight-cost {
@@ -200,7 +268,9 @@ dialog::backdrop {
       margin: 5px 25px 0 0 ;
       font-size: 20px;
       border: 0;
+      padding: 0;
       line-height: 2;
+      z-index: 0;
     }
   }
 }
