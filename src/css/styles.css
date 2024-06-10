@@ -131,6 +131,14 @@ nav {
       font-size: 30px;
       margin: 10px 0 30px 0;
     };
+    .user-pending-trips-title{
+      font-size: 25px;
+      margin: 0;
+    }
+    .pending-status {
+      font-weight: 400;
+      color: rgb(249,216,0)
+    }
   }
 
 }

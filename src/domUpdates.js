@@ -194,9 +194,8 @@ const postTripRequest = () => {
     Promise.all([APICall('destinations'),APICall('trips')]).then(e => {
     currentTripId = findLastTripId(e[1].trips);
     const userPendingTrips = getPendingUserTrips(e[0].destinations,e[1].trips,currentUserId);
-    console.log(userPendingTrips)
     inputPendingTrip(userPendingTrips);
-    },2000).catch(err => alert('did not work'))})
+    },3000).catch(err => alert('did not work'))})
 }
 
 const postTripEstimate = () => {
