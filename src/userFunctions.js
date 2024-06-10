@@ -39,7 +39,7 @@ const getPendingUserTrips = (destinationData, tripData, userID) => {
 
 const getPastUserTrips = (tripData, userID) => {
    return tripData.reduce((userTrips, trip) => {
-        if(trip.userID === userID) {
+        if(trip.userID === userID && trip.status === 'approved') {
             userTrips.push(trip)
         }
         return userTrips
@@ -48,7 +48,7 @@ const getPastUserTrips = (tripData, userID) => {
 
 const getVisitedDestinationNames = (tripData, destinationData, userID) => {
     let places = [];
-    const filteredTrips = tripData.filter(trip => trip.userID === userID).map(trip => trip.destinationID)
+    const filteredTrips = tripData.filter(trip => trip.userID === userID && trip.status === 'approved').map(trip => trip.destinationID)
     filteredTrips.forEach(place => {
         let destination = destinationData.find(destination => destination.id === place)
         places.push(destination.destination)

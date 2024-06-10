@@ -6,6 +6,7 @@ body {
   margin: 0;
   border: 0;
   font-family: 'Averia Serif Libre';
+  /* overflow-y: hidden; */
 }
 
 button, input[type="submit"] {
@@ -26,7 +27,7 @@ button:hover, input[type="submit"]:hover {
   cursor: pointer;
 }
 .background-wrapper {
-  background-image: url('../images/background3.jpg');
+  background-image: url('../images/background5.jpg');
   background-position: center;
   background-size: cover;
 }
@@ -38,6 +39,9 @@ nav {
   align-items: center;
   font-size: 20px;
   font-weight: 500;
+  .nav-title {
+    margin-left: 50px;
+  }
   .nav-bar-menus{ 
     display: flex;
     justify-content: space-evenly;
@@ -115,9 +119,9 @@ nav {
 .trips-section {
   display: flex;
   justify-content: space-around;
-  height: 71vh;
+  height: 72dvh;
   margin-top: 100px;
-  .section-card-wrapper {
+  .section-card-wrapper,.section-upcoming-card-wrapper {
     background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(20px);
     box-shadow: 10px 10px 30px;
@@ -126,12 +130,37 @@ nav {
     text-align: center;
     border-radius: 10px;
     width: 30vw;
-    height: 50vh;
+    height: 60vh;
     h3 {
       font-size: 30px;
       margin: 10px 0 30px 0;
     };
+    .user-pending-trips-title, .user-past-trips-title{
+      font-size: 25px;
+      margin: 0;
+    }
+    .pending-status {
+      font-weight: 500;
+      color: rgb(249,216,0)
+    }
+    .user-past-trips {
+      align-self: center;
+    }
+    .user-pending-trips {
+      hr {
+        width: 650px;
+      }
+    }
   }
+.section-upcoming-card-wrapper {
+  .upcoming-trips-title {
+    text-wrap: balance;
+    font-size: 30px;
+    letter-spacing: 0.15rem;
+    line-height: 1.5;
+    transform: translateY(150%)
+  }
+}
 
 }
 .glide {

@@ -97,14 +97,16 @@ const fetchUserData = () => {
        createDestinationSelections(allDestinationInfo)
        const userCost = calculatePastTripCosts(e[1].trips,e[2].destinations,user.id)
        const userTrips = getVisitedDestinationNames(e[1].trips,e[2].destinations,user.id)
+       const userPastTripInfo = getPastUserTrips(e[1].trips,user.id).sort((a,b) => new Date(a.date) - new Date(b.date))
        const sortedUserDates = getPastUserTrips(e[1].trips,user.id).map(trip => new Date(trip.date)).sort((a,b) => a-b);
        const userDestinationIDs = getPastUserTrips(e[1].trips,user.id).map(trip => trip.destinationID);
        const userDestinationInfo = getDestinationInfo(e[2].destinations,userDestinationIDs)
+       console.log(userDestinationInfo)
        createGlideSlides(pastTripSlides,userDestinationInfo)
        inputWelcomeMessage(user)
        inputLastTripDate(sortedUserDates[sortedUserDates.length - 1])
        inputTotalCosts(userCost.totalFlightCost,userCost.totalLodgingCost)
-       inputPastTrips(userTrips)
+       inputPastTrips(userTrips, userPastTripInfo)
        const userPendingTrips = getPendingUserTrips(e[2].destinations,e[1].trips,currentUserId)
        inputPendingTrip(userPendingTrips)
        new Glide(sliders[1]).mount()
@@ -121,10 +123,10 @@ const inputLastTripDate = (date) => {
 }
 const inputPendingTrip = (pendingTripInfos) => {
     userPendingTrips.innerHTML = ""
-    userPendingTrips.innerHTML = `Your pending trip location(s): <br>`
     pendingTripInfos.forEach(trip => {
-        userPendingTrips.innerHTML += `<br><strong>${trip.destinationName}</strong> 
-        <hr><p>Trip Date: ${trip.date}&nbsp;&nbsp;Duration: ${trip.duration} days &nbsp;&nbsp;Status: Pending </p><hr>`
+        userPendingTrips.innerHTML += `<br><strong>[ ${trip.destinationName} ]</strong>&nbsp;&nbsp;
+        <span>Trip Date: ${trip.date}&nbsp;&nbsp;&nbsp;Duration: ${trip.duration} days&nbsp;&nbsp;Status:</span>
+        <span class=pending-status> Pending </span><hr>`
     })
 }
 const inputTotalCosts = (flightCost,lodgingCost) => {
@@ -132,10 +134,11 @@ const inputTotalCosts = (flightCost,lodgingCost) => {
     <br>You have spent a total of $${lodgingCost} on lodging.`
 }
 
-const inputPastTrips = (trips) => {
-    userPastTrips.innerHTML = `Your past visited locations: `
-    trips.forEach(trip => {
-        userPastTrips.innerHTML += `<br><strong>[${trip}],</strong>`
+const inputPastTrips = (trips, tripsInfo) => {
+    trips.forEach((trip,i) => {
+        userPastTrips.innerHTML += `<br><strong>[ ${trip} ]</strong>&nbsp;&nbsp;
+       <span>Trip Date: ${tripsInfo[i].date}&nbsp;&nbsp;&nbsp;Duration: ${tripsInfo[i].duration} days&nbsp;&nbsp;
+       Traveler(s): ${tripsInfo[i].travelers}</span><hr>`
     })
 }
 
@@ -194,9 +197,8 @@ const postTripRequest = () => {
     Promise.all([APICall('destinations'),APICall('trips')]).then(e => {
     currentTripId = findLastTripId(e[1].trips);
     const userPendingTrips = getPendingUserTrips(e[0].destinations,e[1].trips,currentUserId);
-    console.log(userPendingTrips)
     inputPendingTrip(userPendingTrips);
-    },2000).catch(err => alert('did not work'))})
+    },5000).catch(err => alert('did not work'))})
 }
 
 const postTripEstimate = () => {
