@@ -1,11 +1,10 @@
 import {calculatePastTripCosts, getPastUserTrips, getVisitedDestinationNames, getNonVisitedDestinationIDs, 
-    getDestinationInfo, calculateTotalTripCost, findLastTripId, findDestinationInfo} from './userFunctions.js'
+    getDestinationInfo, calculateTotalTripCost, findLastTripId, findDestinationInfo, getPendingUserTrips} from './userFunctions.js'
 import Glide from '@glidejs/glide';
 
 let currentTripId;
 let currentUserId;
 let singleDestinationInfo;
-let pendingTrips = [];
 const welcomeHeader = document.querySelector('.welcome-message')
 const userCosts = document.querySelector('.user-total-costs');
 const userPastTrips = document.querySelector('.user-past-trips');
@@ -106,6 +105,8 @@ const fetchUserData = () => {
        inputLastTripDate(sortedUserDates[sortedUserDates.length - 1])
        inputTotalCosts(userCost.totalFlightCost,userCost.totalLodgingCost)
        inputPastTrips(userTrips)
+       const userPendingTrips = getPendingUserTrips(e[2].destinations,e[1].trips,currentUserId)
+       inputPendingTrip(userPendingTrips)
        new Glide(sliders[1]).mount()
     }).catch(err => alert('Could not fetch user data..'))
 }
@@ -122,7 +123,7 @@ const inputPendingTrip = (pendingTripInfos) => {
     userPendingTrips.innerHTML = ""
     userPendingTrips.innerHTML = `Your pending trip location(s): <br>`
     pendingTripInfos.forEach(trip => {
-        userPendingTrips.innerHTML += `<br><strong>${trip.destination}</strong> 
+        userPendingTrips.innerHTML += `<br><strong>${trip.destinationName}</strong> 
         <hr><p>Trip Date: ${trip.date}&nbsp;&nbsp;Duration: ${trip.duration} days &nbsp;&nbsp;Status: Pending </p><hr>`
     })
 }
@@ -188,15 +189,20 @@ const postTripRequest = () => {
           'Content-Type': 'application/json'
         }
       };
-   APICall('trips',options).then(e => e).catch(err => alert('did not work'))
-   pendingTrips.push({date: formData.date, duration: +formData.duration, 
-    travelers: +formData.travelers, destination: formData.destination})
-   inputPendingTrip(pendingTrips)
+    APICall('trips',options).then(e => console.log(e)).catch(err => alert('did not work'))
+   setTimeout(() => {
+    Promise.all([APICall('destinations'),APICall('trips')]).then(e => {
+    currentTripId = findLastTripId(e[1].trips);
+    const userPendingTrips = getPendingUserTrips(e[0].destinations,e[1].trips,currentUserId);
+    console.log(userPendingTrips)
+    inputPendingTrip(userPendingTrips);
+    },2000).catch(err => alert('did not work'))})
 }
 
 const postTripEstimate = () => {
     const formData = getFormData()
-    Promise.all([APICall('destinations')]).then(e => {
+    Promise.all([APICall('destinations'),APICall('trips')]).then(e => {
+        currentTripId = findLastTripId(e[1].trips);
         let totalCost = calculateTotalTripCost(formData.duration, formData.travelers, formData.destination, e[0].destinations)
         toggleTotalEstimate('visible');
         estimatedFlightCost.innerHTML = `Estimated Total Flight Cost <br>
