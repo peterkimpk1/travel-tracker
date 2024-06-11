@@ -1,4 +1,4 @@
-.background-wrapper {
+#agent-page-background {
     height: 100vh;
     display: flex;
     justify-content: space-between;
@@ -10,7 +10,7 @@
 h1 {
     font-size: 30px;
 }
-.welcome-message-container {
+#agent-welcome {
     margin-top: 10px;
     display: flex;
     justify-content: center;
@@ -21,7 +21,14 @@ h1 {
     box-shadow: 10px 10px 30px;
     width: 30vw;
     height: 50px;   
-
+}
+.logout-btn {
+    align-self: flex-end;
+    width: fit-content;
+    margin: 20px 0 0 0;
+}
+.logout-btn:hover {
+    cursor: pointer;
 }
 .summary-section-container {
     margin-top: 30px;
@@ -52,9 +59,25 @@ h1 {
         list-style-type: none;
         padding-left: 0;
         text-align: center;
+        button {
+            display: inline-block;
+            width: fit-content;
+        }
     }
 
     h1 {
         text-align: center;
     };
+}
+.update-trip-message, .delete-trip-message {
+    font-weight: 500;
+    color: #1373E6;
+}
+.pending-status {
+    font-weight: 500;
+    color: rgb(249,216,0)
+}
+.approved-status {
+    font-weight: 500;
+    color: #1373E6;
 }
