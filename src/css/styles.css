@@ -1,6 +1,6 @@
 @import 'fonts.css';
 @import 'login.css';
-
+@import 'agency.css';
 body {
   overflow-x: hidden;
   margin: 0;
@@ -47,10 +47,11 @@ nav {
     justify-content: space-evenly;
     list-style-type: none;
     width: 30vw;
-    #logout {
-      all: unset;
+    #user-logout-btn {
+      all:unset;
     }
-    #logout:hover {
+    #user-logout-btn:hover {
+      border-bottom: 2px solid #1373E6;
       cursor: pointer;
     }
   }

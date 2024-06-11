@@ -24,16 +24,16 @@
       </div>
     </header>
   </section>
-  <div class="login-page-background">
+  <div class="login-page-background" >
       <section class="login-page-wrapper">
         <form class=login type="submit">
-          <p class="fail-message hidden"style="font-family:sans-serif;color: rgb(255, 191, 0);">Incorrect username or password.</p>
+          <p class="fail-message"style="font-family:sans-serif;color: rgb(255, 191, 0);">Incorrect username or password.</p>
           <label for="username"></label>
           <input name="username" type="text" id="username" placeholder="Username"/><br>
           <label for="password"></label>
           <input name="password" type="text" id="password" placeholder="Password"/>
           <input type="submit" value="Login">
-          <p class="success-message hidden" style="font-family:sans-serif;color: rgb(255, 191, 0);">Login success! logging in now..</p>
+          <p class="success-message" style="font-family:sans-serif;color: rgb(255, 191, 0);">Login success! logging in now..</p>
         </form>
       </section>
   </div>
@@ -45,7 +45,7 @@
           <li>Past</li>
           <li>Upcoming</li>
           <li>Pending</li>
-          <button id="logout">Logout</button>
+          <button id="user-logout-btn">Logout</button>
         </ul>
       </nav>
       <section class="welcome-section">
@@ -144,6 +144,35 @@
         </div>
       </section>
     </div>
+  </section>
+  <section class="agent-page hidden">
+    <div class="background-wrapper" id="agent-page-background">
+      <section class="card-section-container">
+        <h1>Pending User Trips</h1>
+        <label for="pending-trips">Pending Trips: </label>
+        <select name="pending-trips" id="pending-trips"></select>
+        <ul class="agency-pending-user-trips"></ul>
+      </section>
+      <div class="welcome-message-wrapper">
+        <section class="welcome-message-container" id="agent-welcome">
+          <h1>Welcome, Agent</h1>
+        </section>
+        <button class="logout-btn">Logout</button>
+        <div class="summary-section-wrapper">
+          <section class="summary-section-container">
+            <h2>Summary</h2>
+            <p class="agency-total">Total income generated this year: </p>
+          </section>
+        </div>
+      </div>
+      <section class="card-section-container">
+        <h1>Users on Trips Today</h1>
+        <p class="all-user-pending-approved-trips">
+          
+        </p>
+      </section>
+
+  </div>
   </section>
   <script src="bundle.js"></script>
 

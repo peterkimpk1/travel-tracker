@@ -1,5 +1,6 @@
 import {calculatePastTripCosts, getPastUserTrips, getVisitedDestinationNames, getNonVisitedDestinationIDs, 
     getDestinationInfo, calculateTotalTripCost, findLastTripId, findDestinationInfo, getPendingUserTrips} from './userFunctions.js'
+import { fetchAllPendingUserTrips } from './agency.js';
 import Glide from '@glidejs/glide';
 
 let currentTripId;
@@ -12,6 +13,7 @@ const userPendingTrips = document.querySelector('.user-pending-trips');
 const lastTripDate = document.querySelector('.last-trip-date');
 const openModalBtn = document.querySelector("[data-open-modal]");
 const closeModalBtn = document.querySelector("[data-close-modal]");
+const agentPageSection = document.querySelector('.agent-page')
 const modal = document.querySelector("[data-modal]")
 const bookTripForm = document.querySelector('#book-trip-form')
 const modalSlides = document.getElementById('all-destinations')
@@ -30,15 +32,20 @@ const dashboardPage = document.querySelector('.dashboard-page');
 const loginForm = document.querySelector('.login')
 const failMessage = document.querySelector('.fail-message')
 const successMessage = document.querySelector('.success-message');
-
+const userLogoutBtn = document.querySelector('#user-logout-btn')
+const usernameLogin = document.querySelector('#username')
+const passwordLogin = document.querySelector('#password')
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
     togglePage();
 })
-
+window.addEventListener('DOMContentLoaded', () => {
+    toggleSuccessMessage('hidden')
+    toggleFailMessage('hidden')
+    toggleTotalEstimate('hidden')
+})
 window.addEventListener('load',() => {
     setTripDate()
-    toggleTotalEstimate('hidden')
 })
 
 openModalBtn.addEventListener('click',() =>{
@@ -59,26 +66,56 @@ bookTripForm.addEventListener('submit', (e) => {
     postTripEstimate()
 })
 
+
+userLogoutBtn.addEventListener('click', (e) => {
+    e.preventDefault()
+    dashboardPage.classList.add('hidden')
+    loginPageHeader.classList.remove('hidden')
+    loginPage.classList.remove('hidden')
+    clearModal();
+})
+
+
 destinationSelection.addEventListener('change', () => {
     const formData = getFormData()
     APICall('destinations').then(e => {
         singleDestinationInfo = findDestinationInfo(e.destinations,formData.destination)
     })
 })
+
 const togglePage = () => {
     const formData = new FormData(loginForm);
     const usernameInput = formData.get('username');
     const passwordInput = formData.get('password');
+    if (usernameInput === 'agency' && passwordInput === 'travel') {
+        toggleSuccessMessage('visible')
+        toggleFailMessage('hidden')
+        setTimeout(() => {
+            usernameLogin.value = "";
+            passwordLogin.value = "";
+            loginPageHeader.classList.add('hidden');
+            loginPage.classList.add('hidden');
+            agentPageSection.classList.remove('hidden')
+            toggleSuccessMessage('hidden')
+            fetchAllPendingUserTrips()
+        },2000)
+        return;
+    }
     for (var i = 0; i < 51; i++) {
         if (usernameInput === `traveler${i}` && passwordInput === 'travel') {
-            successMessage.classList.remove('hidden')
-            failMessage.classList.add('hidden')
+            toggleSuccessMessage('visible')
+            toggleFailMessage('hidden')
             currentUserId = i;
-            setTimeout(() => showDashboardPage(),2000)
+            setTimeout(() => {
+                usernameLogin.value = "";
+                passwordLogin.value = "";
+                toggleSuccessMessage('hidden')
+                showDashboardPage()
+            },2000)
             return;
         }
         else {
-            failMessage.classList.remove('hidden')
+            toggleFailMessage('visible')
         }
     }
 }
@@ -108,7 +145,7 @@ const fetchUserData = () => {
        const sortedUserDates = getPastUserTrips(e[1].trips,user.id).map(trip => new Date(trip.date)).sort((a,b) => a-b);
        const userDestinationIDs = getPastUserTrips(e[1].trips,user.id).map(trip => trip.destinationID);
        const userDestinationInfo = getDestinationInfo(e[2].destinations,userDestinationIDs)
-       console.log(userDestinationInfo)
+
        createGlideSlides(pastTripSlides,userDestinationInfo)
        inputWelcomeMessage(user)
        inputLastTripDate(sortedUserDates[sortedUserDates.length - 1])
@@ -142,6 +179,7 @@ const inputTotalCosts = (flightCost,lodgingCost) => {
 }
 
 const inputPastTrips = (trips, tripsInfo) => {
+    userPastTrips.innerHTML = "";
     trips.forEach((trip,i) => {
         userPastTrips.innerHTML += `<br><strong>[ ${trip} ]</strong>&nbsp;&nbsp;
        <span>Trip Date: ${tripsInfo[i].date}&nbsp;&nbsp;&nbsp;Duration: ${tripsInfo[i].duration} days&nbsp;&nbsp;
@@ -160,6 +198,7 @@ const createGlideSlides = (glideSlidesElement, destinations) => {
 }
 
 const createDestinationSelections = (destinations) => {
+    destinationSelection.innerHTML = "";
     destinations.forEach(destination => {
         let option = document.createElement("option")
         option.value = destination.destination
@@ -206,6 +245,7 @@ const postTripRequest = () => {
     const userPendingTrips = getPendingUserTrips(e[0].destinations,e[1].trips,currentUserId);
     inputPendingTrip(userPendingTrips);
     },5000).catch(err => alert('did not work'))})
+    clearModal();
 }
 
 const postTripEstimate = () => {
@@ -224,6 +264,18 @@ const postTripEstimate = () => {
         singleDestinationInfo = findDestinationInfo(e[0].destinations, formData.destination)
     })
 }
+const clearModal = () => {
+    estimatedFlightCost.innerHTML = 'Estimated Total Flight Cost';
+    estimatedLodgeCost.innerHTML = 'Estimated Total Lodging Cost';
+    toggleTotalEstimate('hidden')
+    bookTripForm.reset();
+}
+const toggleSuccessMessage = (property) => {
+    successMessage.style.visibility = property
+}
+const toggleFailMessage = (property) => {
+    failMessage.style.visibility = property
+}
 
 const toggleTotalEstimate = (property) => {
     totalEstimateLine.style.visibility = property
@@ -235,12 +287,19 @@ const setTripDate = () => {
     let day = date.getDate();
     let month = date.getMonth() + 1;
     let year = date.getFullYear()
-    if (month.toString.length === 1) {
+    if (month < 10) {
         month = '0' + (date.getMonth() + 1)
     }
-    if (day.toString.length === 1) {
+    if (day < 10) {
         day = '0' + (date.getDate())
     }
     tripDate.setAttribute("min",`${year}-${month}-${day}`)
+    return {
+        day, month, year
+    }
 }
 
+export {
+    APICall,
+    setTripDate
+}

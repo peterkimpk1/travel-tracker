@@ -36,6 +36,15 @@ const getPendingUserTrips = (destinationData, tripData, userID) => {
         return {destinationName: destinationInfo.destination, ...trip}
     })
 }
+const getAgencyTrips = (destinationData, tripData, status) => {
+    let pendingTrips = tripData.filter(trip => trip.status === status)
+    return pendingTrips.map(trip => {
+        var destinationInfo = destinationData.find(destination => {
+            return destination.id === trip.destinationID
+        })
+        return {destinationName: destinationInfo.destination, ...trip}
+    })
+}
 
 const getPastUserTrips = (tripData, userID) => {
    return tripData.reduce((userTrips, trip) => {
@@ -103,4 +112,5 @@ export {
     findDestinationInfo,
     calculateTotalTripCost,
     findLastTripId,
+    getAgencyTrips
 }
