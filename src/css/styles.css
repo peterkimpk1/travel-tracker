@@ -47,6 +47,13 @@ nav {
     justify-content: space-evenly;
     list-style-type: none;
     width: 30vw;
+    #user-logout-btn {
+      all:unset;
+    }
+    #user-logout-btn:hover {
+      border-bottom: 2px solid #1373E6;
+      cursor: pointer;
+    }
   }
 }
 
