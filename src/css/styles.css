@@ -47,6 +47,12 @@ nav {
     justify-content: space-evenly;
     list-style-type: none;
     width: 30vw;
+    #logout {
+      all: unset;
+    }
+    #logout:hover {
+      cursor: pointer;
+    }
   }
 }
 

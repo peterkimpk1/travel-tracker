@@ -58,6 +58,13 @@ bookTripForm.addEventListener('submit', (e) => {
     e.preventDefault()
     postTripEstimate()
 })
+
+destinationSelection.addEventListener('change', () => {
+    const formData = getFormData()
+    APICall('destinations').then(e => {
+        singleDestinationInfo = findDestinationInfo(e.destinations,formData.destination)
+    })
+})
 const togglePage = () => {
     const formData = new FormData(loginForm);
     const usernameInput = formData.get('username');
