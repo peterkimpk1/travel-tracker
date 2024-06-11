@@ -31,10 +31,10 @@ const loginForm = document.querySelector('.login')
 const failMessage = document.querySelector('.fail-message')
 const successMessage = document.querySelector('.success-message');
 
-loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    togglePage();
-})
+// loginForm.addEventListener('submit', (e) => {
+//     e.preventDefault();
+//     togglePage();
+// })
 
 window.addEventListener('load',() => {
     setTripDate()
@@ -62,6 +62,13 @@ const togglePage = () => {
     const formData = new FormData(loginForm);
     const usernameInput = formData.get('username');
     const passwordInput = formData.get('password');
+    if (usernameInput === 'agency' && passwordInput === 'travel') {
+        successMessage.classList.remove('hidden')
+        failMessage.classList.add('hidden')
+        loginPageHeader.classList.add('hidden');
+        loginPage.classList.add('hidden');
+        return;
+    }
     for (var i = 0; i < 51; i++) {
         if (usernameInput === `traveler${i}` && passwordInput === 'travel') {
             successMessage.classList.remove('hidden')
@@ -237,3 +244,6 @@ const setTripDate = () => {
     tripDate.setAttribute("min",`${year}-${month}-${day}`)
 }
 
+export {
+    APICall
+}

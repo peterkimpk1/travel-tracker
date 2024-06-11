@@ -10,7 +10,7 @@
   <title>Travel Tracker</title>
 </head>
 <body>
-  <section class="login-page-header" >
+  <section class="login-page-header" hidden>
     <header>
       <h1>DEPARTURES</h1>
       <div class="display-tag-wrapper">
@@ -24,7 +24,7 @@
       </div>
     </header>
   </section>
-  <div class="login-page-background">
+  <div class="login-page-background" hidden>
       <section class="login-page-wrapper">
         <form class=login type="submit">
           <p class="fail-message hidden"style="font-family:sans-serif;color: rgb(255, 191, 0);">Incorrect username or password.</p>
@@ -144,6 +144,31 @@
         </div>
       </section>
     </div>
+  </section>
+  <section class="agent-page">
+    <div class="background-wrapper">
+      <section class="card-section-container">
+        <h1>Pending User Trips</h1>
+        <label for="pending-trips">Pending Trips: </label>
+        <select name="pending-trips" id="pending-trips"></select>
+        <ul class="agency-pending-user-trips"></ul>
+      </section>
+      <div class="welcome-message-wrapper">
+        <section class="welcome-message-container">
+          <h1>Welcome, Agent</h1>
+        </section>
+        <div class="summary-section-wrapper">
+          <section class="summary-section-container">
+            <h2>Summary</h2>
+            <p class="agency-total">Total income generated this year: </p>
+          </section>
+        </div>
+      </div>
+      <section class="card-section-container">
+        <h1>Users on Trips Today</h1>
+      </section>
+
+  </div>
   </section>
   <script src="bundle.js"></script>
 
