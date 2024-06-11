@@ -66,12 +66,21 @@ bookTripForm.addEventListener('submit', (e) => {
     postTripEstimate()
 })
 
+
 userLogoutBtn.addEventListener('click', (e) => {
     e.preventDefault()
     dashboardPage.classList.add('hidden')
     loginPageHeader.classList.remove('hidden')
     loginPage.classList.remove('hidden')
     clearModal();
+})
+
+
+destinationSelection.addEventListener('change', () => {
+    const formData = getFormData()
+    APICall('destinations').then(e => {
+        singleDestinationInfo = findDestinationInfo(e.destinations,formData.destination)
+    })
 })
 
 const togglePage = () => {
