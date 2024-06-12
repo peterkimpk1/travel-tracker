@@ -4,7 +4,7 @@ import trips from '../src/test-data/sample-trips.js';
 import travelers from '../src/test-data/sample-travelers.js';
 import destinations from '../src/test-data/sample-destinations.js';
 const {calculatePastTripCosts, getPastUserTrips, getVisitedDestinationNames, getNonVisitedDestinationIDs, 
-  getDestinationInfo, findDestinationInfo, calculateTotalTripCost, findLastTripId, getPendingUserTrips} = require('../src/userFunctions.js')
+  getDestinationInfo, findDestinationInfo, calculateTotalTripCost, findLastTripId, getPendingUserTrips,getAgencyIncome} = require('../src/userFunctions.js')
 
 describe('calculatePastTripCosts', function() {
   var tripData, destinationData;
@@ -168,7 +168,7 @@ describe('findLastTripId', () => {
   it ('should find the last trip id available', () => {
     const tripData = trips.trips;
     const lastId = findLastTripId(tripData);
-    expect(lastId).to.equal(38)
+    expect(lastId).to.equal(39)
   })
 })
 
@@ -202,5 +202,15 @@ describe('getPendingUserTrips', () => {
         "suggestedActivities": []
       }
     ])
+  })
+})
+describe('getAgencyIncome', () => {
+  it (`should be able to return the total income made by the agency for this year\s trips rounded to the cent. 
+    Should only calculate from approved trips`, () => {
+    let tripsData = trips.trips;
+    let destinationData = destinations.destinations;
+    const totalIncome = getAgencyIncome(destinationData, tripsData);
+    expect(totalIncome.flightIncome).to.equal(15)
+    expect(totalIncome.lodgingIncome).to.equal(600)
   })
 })
