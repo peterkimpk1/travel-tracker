@@ -1,4 +1,4 @@
-import {getAgencyTrips} from './userFunctions.js'
+import {getAgencyTrips, getAgencyIncome} from './userFunctions.js'
 import {APICall, setTripDate} from './domUpdates.js'
 const allPendingUserTrips = document.querySelector('.agency-pending-user-trips')
 const pendingSelections = document.querySelector('#pending-trips')
@@ -7,6 +7,8 @@ const agentPageSection = document.querySelector('.agent-page')
 const loginPageHeader = document.querySelector('.login-page-header')
 const loginPageBackground = document.querySelector('.login-page-background')
 const allUsersOnTrips = document.querySelector('.all-user-pending-approved-trips')
+const allUserFutureTrips = document.querySelector('.all-future-pending-approved-trips')
+const agencyTotal = document.querySelector('.agency-total')
 let allPendingTrips = [];
 
 
@@ -27,6 +29,7 @@ const fetchAllPendingUserTrips = () => {
     Promise.all([APICall('trips'),APICall('destinations')]).then(e => {
         const pendingTrips = getAgencyTrips(e[1].destinations,e[0].trips,'pending');
         const approvedTrips = getAgencyTrips(e[1].destinations,e[0].trips,'approved');
+        const agencyIncome = getAgencyIncome(e[1].destinations,e[0].trips);
         if (allPendingTrips.length > 0) {
             allPendingTrips = [];
         }
@@ -36,10 +39,14 @@ const fetchAllPendingUserTrips = () => {
         changePendingUserList(pendingTrips);
         const allTrips = pendingTrips.concat(approvedTrips)
         displayUsersOnTrips(allTrips)
+        displayAgencyIncome(agencyIncome)
     })
    
 }
-
+const displayAgencyIncome = (income) => {
+    agencyTotal.innerHTML = `Total income generated from flights this year: $${income.flightIncome} 
+    <br>Total income generated from lodging this year: $${income.lodgingIncome}`
+}
 const createPendingSelections = (trips) => {
     pendingSelections.innerHTML = "";
     trips.forEach(trip => {
@@ -128,7 +135,7 @@ const approveTrip = (e) => {
     },3000)
 }
 
-const deleteTrip = () => {
+const deleteTrip = (e) => {
     const tripIndex = findTripIndex(+e.target.id)
     const options = {
         method: 'DELETE',
@@ -149,10 +156,17 @@ const displayUsersOnTrips = (trips) => {
         trip.date = new Date(trip.date)
          return trip
      })
-    const filteredTrips = allTrips.filter(trip => ((trip.date.getMonth() + 1) >= parseInt(currentDate.month) && (trip.date.getFullYear() === currentDate.year))).sort((a,b)=>a.date-b.date)
+    const filteredTrips = allTrips.filter(trip => ((trip.date.getDate() === currentDate.day) &&(trip.date.getMonth() + 1) === parseInt(currentDate.month) && (trip.date.getFullYear() === currentDate.year))).sort((a,b)=>a.date-b.date)
+    const futureTrips = allTrips.filter(trip => ((trip.date.getMonth() + 1) >= parseInt(currentDate.month) && (trip.date.getFullYear() >= currentDate.year))).sort((a,b)=>a.date-b.date)
     allUsersOnTrips.innerHTML = "";
     filteredTrips.forEach(trip => {
-        allUsersOnTrips.innerHTML += `<br><strong>[ ${trip.destinationName} ]</strong>&nbsp;&nbsp;
+        allUsersOnTrips.innerHTML += `<strong>[ ${trip.destinationName} ]</strong>&nbsp;&nbsp;
+        <span>Trip Date: ${trip.date.getFullYear()}/${trip.date.getMonth() + 1}/${trip.date.getDate()}&nbsp;&nbsp;&nbsp;Duration: ${trip.duration} days&nbsp;&nbsp;Status:</span>
+        <span class=${trip.status}-status> ${trip.status} </span><hr>`
+    })
+    allUserFutureTrips.innerHTML = "";
+    futureTrips.forEach(trip => {
+        allUserFutureTrips.innerHTML += `<strong>[ ${trip.destinationName} ]</strong>&nbsp;&nbsp;
         <span>Trip Date: ${trip.date.getFullYear()}/${trip.date.getMonth() + 1}/${trip.date.getDate()}&nbsp;&nbsp;&nbsp;Duration: ${trip.duration} days&nbsp;&nbsp;Status:</span>
         <span class=${trip.status}-status> ${trip.status} </span><hr>`
     })
