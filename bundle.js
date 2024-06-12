@@ -1053,6 +1053,13 @@ __webpack_require__.r(__webpack_exports__);
 const calculatePastTripCosts = (tripData, destinationData, userID) =>  {
     var latestYear;
     let filteredTrips = tripData.filter(trip => trip.userID === userID && trip.status === 'approved')
+    if (filteredTrips.length === 0) {
+        let totals = {
+            totalLodgingCost: 0,
+            totalFlightCost: 0
+        };
+        return totals
+    }
     latestYear = new Date(filteredTrips[0].date).getFullYear()
     filteredTrips.forEach(trip => {
         if (latestYear < new Date(trip.date).getFullYear()) {
@@ -1100,21 +1107,29 @@ const getAgencyTrips = (destinationData, tripData, status) => {
 }
 
 const getPastUserTrips = (tripData, userID) => {
-   return tripData.reduce((userTrips, trip) => {
+   let pastTrips = tripData.reduce((userTrips, trip) => {
         if(trip.userID === userID && trip.status === 'approved') {
             userTrips.push(trip)
         }
         return userTrips
     },[]).filter(trip => new Date(trip.date).getFullYear() < 2024)
+    if (pastTrips.length > 0) {
+        return pastTrips
+    }
+    return 'No past trips yet..'
 }
 
 const getUpcomingUserTrips = (tripData, userID) => {
-    return tripData.reduce((userTrips, trip) => {
+    let upcomingTrips = tripData.reduce((userTrips, trip) => {
         if(trip.userID === userID && trip.status === 'approved') {
             userTrips.push(trip)
         }
         return userTrips
     },[]).filter(trip => new Date(trip.date).getFullYear() === 2024)
+    if (upcomingTrips.length > 0) {
+        return upcomingTrips;
+    }
+    return 'Looks like you dont have any upcoming trips yet. Book your next adventure today!'
 }
 
 const getVisitedDestinationNames = (tripData, destinationData, userID) => {
@@ -1124,7 +1139,10 @@ const getVisitedDestinationNames = (tripData, destinationData, userID) => {
         let destination = destinationData.find(destination => destination.id === place)
         places.push(destination.destination)
     })
-    return places;
+    if (places.length > 0) {
+        return places;
+    }
+    return 'No visited destinations yet.. book your first trip today!'
 }
 
 const getNonVisitedDestinationIDs = (tripData, userID) => {
@@ -1178,8 +1196,14 @@ const getAgencyIncome = (destinationData, tripData) => {
          total.lodgingIncome += foundDestination.estimatedLodgingCostPerDay * trip.duration * 0.1;
          return total;
      },{})
-     totals.flightIncome = +totals.flightIncome .toFixed(2)
-     totals.lodgingIncome = + totals.lodgingIncome.toFixed(2)
+    if (totals.flightIncome && totals.lodgingIncome) {
+     totals.flightIncome = +totals.flightIncome.toFixed(2)
+     totals.lodgingIncome = +totals.lodgingIncome.toFixed(2)
+        }
+    else {
+        totals.flightIncome = 0;
+        totals.lodgingIncome = 0;
+    }
      return totals;
  }
 
