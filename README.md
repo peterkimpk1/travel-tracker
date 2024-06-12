@@ -31,7 +31,8 @@ Javascript, HTML, CSS, Glide.js, Mocha, Chai, Webpack
 2. Mounting Glide in correct window
 
 ### Working app
-![screenshot](https://github.com/peterkimpk1/travel-tracker/assets/161254279/27ec1108-cf61-42e2-ae0a-df0bc7e3fe51)
+![Screenshot 2024-06-11 at 11 00 03 PM](https://github.com/peterkimpk1/travel-tracker/assets/161254279/d113a6ce-f892-4525-97d2-0fe94389b68e)
+
 
 ### Link to Project Board
 [Link](https://github.com/users/peterkimpk1/projects/6)
