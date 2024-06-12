@@ -145,7 +145,6 @@ const fetchUserData = () => {
        const sortedUserDates = getPastUserTrips(e[1].trips,user.id).map(trip => new Date(trip.date)).sort((a,b) => a-b);
        const userDestinationIDs = getPastUserTrips(e[1].trips,user.id).map(trip => trip.destinationID);
        const userDestinationInfo = getDestinationInfo(e[2].destinations,userDestinationIDs)
-
        createGlideSlides(pastTripSlides,userDestinationInfo)
        inputWelcomeMessage(user)
        inputLastTripDate(sortedUserDates[sortedUserDates.length - 1])
@@ -180,13 +179,12 @@ const inputTotalCosts = (flightCost,lodgingCost) => {
 
 const inputPastTrips = (trips, tripsInfo) => {
     userPastTrips.innerHTML = "";
-    trips.forEach((trip,i) => {
-        userPastTrips.innerHTML += `<br><strong>[ ${trip} ]</strong>&nbsp;&nbsp;
-       <span>Trip Date: ${tripsInfo[i].date}&nbsp;&nbsp;&nbsp;Duration: ${tripsInfo[i].duration} days&nbsp;&nbsp;
-       Traveler(s): ${tripsInfo[i].travelers}</span><hr>`
+    tripsInfo.forEach((trip,i) => {
+        userPastTrips.innerHTML += `<br><strong>[ ${trips[i]} ]</strong>&nbsp;&nbsp;
+        <span>Trip Date: ${trip.date}&nbsp;&nbsp;&nbsp;Duration: ${trip.duration} days&nbsp;&nbsp;
+        Traveler(s): ${trip.travelers}</span><hr>`
     })
 }
-
 const createGlideSlides = (glideSlidesElement, destinations) => {
     destinations.forEach((destinations) => {
         glideSlidesElement.innerHTML += `

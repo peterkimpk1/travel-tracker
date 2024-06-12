@@ -52,7 +52,7 @@ const getPastUserTrips = (tripData, userID) => {
             userTrips.push(trip)
         }
         return userTrips
-    },[])
+    },[]).filter(trip => new Date(trip.date).getFullYear() < 2024)
 }
 
 const getVisitedDestinationNames = (tripData, destinationData, userID) => {
