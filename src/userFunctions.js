@@ -101,7 +101,25 @@ const calculateTotalTripCost = (duration, travelers, destinationName, destinatio
 const findLastTripId = (tripData) => {
     return tripData[tripData.length-1].id
 }
-
+const getAgencyIncome = (destinationData, tripData) => {
+    const currentYearTrips = tripData.map(trip => {
+         trip.date = new Date(trip.date)
+         return trip
+     }).filter(trip => trip.date.getFullYear() === 2024 && trip.status === 'approved')
+     let totals =currentYearTrips.reduce((total,trip) => {
+         let foundDestination = destinationData.find(destination => destination.id === trip.destinationID)
+         if (!total.flightIncome && !total.lodgingIncome) {
+             total.flightIncome = 0;
+             total.lodgingIncome = 0;
+         }
+         total.flightIncome += foundDestination.estimatedFlightCostPerPerson * trip.travelers * 0.1;
+         total.lodgingIncome += foundDestination.estimatedLodgingCostPerDay * trip.duration * 0.1;
+         return total;
+     },{})
+     totals.flightIncome = +totals.flightIncome .toFixed(2)
+     totals.lodgingIncome = + totals.lodgingIncome.toFixed(2)
+     return totals;
+ }
 export {
     calculatePastTripCosts,
     getPastUserTrips,
@@ -112,5 +130,6 @@ export {
     findDestinationInfo,
     calculateTotalTripCost,
     findLastTripId,
-    getAgencyTrips
+    getAgencyTrips,
+    getAgencyIncome
 }
