@@ -3,9 +3,10 @@
   "version": "2.0.0",
   "description": "Project starter kit using webpack, mocha, chai, and SCSS/SASS enabled",
   "main": "src/index.js",
+  "homepage": "http://peterkimpk1.github.io/travel-tracker",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/turingschool-examples/webpack-starter-kit.git"
+    "url": "git+https://github.com/peterkimpk1/travel-tracker.git"
   },
   "author": "Turing School of Software and Design",
   "license": "MIT",
@@ -14,6 +15,7 @@
     "css-loader": "^5.2.6",
     "eslint": "^7.27.0",
     "file-loader": "^6.2.0",
+    "gh-pages": "^6.1.1",
     "mocha": "^10.2.0",
     "mochapack": "^2.1.2",
     "style-loader": "^3.3.4",
@@ -25,7 +27,9 @@
     "start": "webpack serve",
     "build": "webpack",
     "test": "mochapack 'test/**/*.js'",
-    "lint": "./node_modules/.bin/eslint 'src/**.js' 'test/**.js'"
+    "lint": "./node_modules/.bin/eslint 'src/**.js' 'test/**.js'",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@glidejs/glide": "^3.6.1"

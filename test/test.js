@@ -30,7 +30,12 @@ describe('calculatePastTripCosts', function() {
     expect(totals.totalLodgingCost).to.equal(660)
     expect(totals.totalFlightCost).to.equal(3300)
   })
-
+  it ('should return 0 if the user has not visited any locations yet', () => {
+    const userID = 51;
+    const totals = calculatePastTripCosts(tripData, destinationData, userID)
+    expect(totals.totalLodgingCost).to.equal(0)
+    expect(totals.totalFlightCost).to.equal(0)
+  })
 });
 
 describe('getPastUserTrips', () => {
@@ -86,8 +91,13 @@ describe('getPastUserTrips', () => {
         "status": "approved",
         "suggestedActivities": []
       }])
+  },
+  it ('should be return a string message if the user has no past trips', () => {
+    const userID = 51;
+    const noPastTripMessage = getPastUserTrips(tripData,userID);
+    expect (noPastTripMessage).to.equal('No past trips yet..')
   })
-})
+)})
 
 describe('getVisitedDestinationNames', () => {
   var destinationData, tripData;
@@ -105,6 +115,11 @@ describe('getVisitedDestinationNames', () => {
     const destinationName = getVisitedDestinationNames(tripData, destinationData, userID);
     expect(destinationName).to.deep.equal(["Antananarivo, Madagascar"])
   })
+  it ('should return a message if the user has not visited a destination yet.', () => {
+    const userID = 51;
+    const noDestinationMessage = getVisitedDestinationNames(tripData, destinationData, userID);
+    expect(noDestinationMessage).to.equal('No visited destinations yet.. book your first trip today!')
+  }) 
 })
 
 describe('getNonVisitedDestinationIDs', () => {
@@ -206,22 +221,68 @@ describe('getPendingUserTrips', () => {
 })
 
 describe('getAgencyIncome', () => {
+  var tripsData,destinationData;
+  beforeEach(() => {
+    tripsData = trips.trips;
+    destinationData = destinations.destinations;
+  })
   it (`should be able to return the total income made by the agency for this years trips rounded to the cent. 
     Should only calculate from approved trips`, () => {
-    let tripsData = trips.trips;
-    let destinationData = destinations.destinations;
     const totalIncome = getAgencyIncome(destinationData, tripsData);
     expect(totalIncome.flightIncome).to.equal(15)
     expect(totalIncome.lodgingIncome).to.equal(600)
   })
+  it ('total amount should return 0 if there are no past trips', () => {
+    let tripData =  [{
+      "id": 37,
+      "userID": 15,
+      "destinationID": 20,
+      "travelers": 3,
+      "date": "2023/06/12",
+      "duration": 8,
+      "status": "pending",
+      "suggestedActivities": []
+    },
+    {
+      "id": 38,
+      "userID": 12,
+      "destinationID": 41,
+      "travelers": 1,
+      "date": "2023/06/20",
+      "duration": 5,
+      "status": "pending",
+      "suggestedActivities": []
+    },
+    {
+      "id": 39,
+      "userID": 50,
+      "destinationID": 41,
+      "travelers": 1,
+      "date": "2023/06/20",
+      "duration": 5,
+      "status": "approved",
+      "suggestedActivities": []
+    },]
+    const totalIncome = getAgencyIncome(destinationData, tripData)
+    expect(totalIncome.flightIncome).to.equal(0);
+    expect(totalIncome.lodgingIncome).to.equal(0);
+  })
 })
 
 describe('getUpcomingUserTrips', () => {
+  var tripData;
+  beforeEach(() => {
+    tripData = trips.trips;
+  })
   it ('should only return approved trips for this year.', () => {
-    let tripData = trips.trips;
     const userID = 50;
     const upcomingTrip = getUpcomingUserTrips(tripData, userID);
     const currentYear = upcomingTrip[0].date.getFullYear()
     expect(currentYear).to.equal(2024)
+  }),
+  it ('should return a message that says that the user has no upcoming trips', () => {
+    const userID = 51;
+    const noUpcomingTripMessage = getUpcomingUserTrips(tripData, userID);
+    expect(noUpcomingTripMessage).to.equal('Looks like you dont have any upcoming trips yet. Book your next adventure today!')
   })
 })
