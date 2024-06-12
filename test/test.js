@@ -1,10 +1,10 @@
 import chai from 'chai';
 const expect = chai.expect;
 import trips from '../src/test-data/sample-trips.js';
-import travelers from '../src/test-data/sample-travelers.js';
 import destinations from '../src/test-data/sample-destinations.js';
 const {calculatePastTripCosts, getPastUserTrips, getVisitedDestinationNames, getNonVisitedDestinationIDs, 
-  getDestinationInfo, findDestinationInfo, calculateTotalTripCost, findLastTripId, getPendingUserTrips,getAgencyIncome} = require('../src/userFunctions.js')
+  getDestinationInfo, findDestinationInfo, calculateTotalTripCost, findLastTripId, getPendingUserTrips, getAgencyIncome,
+  getUpcomingUserTrips} = require('../src/userFunctions.js')
 
 describe('calculatePastTripCosts', function() {
   var tripData, destinationData;
@@ -38,9 +38,9 @@ describe('getPastUserTrips', () => {
   beforeEach(() => {
     tripData = trips.trips;
   })
-  it('should return all of the user\s past trips', () => {
+  it('should return all of the users past trips', () => {
     const userID = 25;
-    const e = getPastUserTrips(tripData,userID);
+    const e = getPastUserTrips(tripData, userID);
     expect(e).to.deep.equal([{
       "id": 1,
       "userID": 25,
@@ -85,7 +85,7 @@ describe('getPastUserTrips', () => {
         "duration": 7,
         "status": "approved",
         "suggestedActivities": []
-    }])
+      }])
   })
 })
 
@@ -97,7 +97,7 @@ describe('getVisitedDestinationNames', () => {
   })
   it ('should return the names of destinations the user has visited', () => {
     const userID = 25;
-    const destinationNames = getVisitedDestinationNames(tripData,destinationData,userID)
+    const destinationNames = getVisitedDestinationNames(tripData, destinationData, userID)
     expect(destinationNames).to.deep.equal(["Tulum, Mexico", "Kathmandu, Nepal", "Anchorage, Alaska"])
   })
   it ('should be able to return the destination for a single trip', () => {
@@ -113,7 +113,7 @@ describe('getNonVisitedDestinationIDs', () => {
     const userID = 25;
     const destinationIDs = getNonVisitedDestinationIDs(tripData, userID)
     expect(destinationIDs).to.deep.equal(
-      [12,13,16,18,20,21,23,26,27,29,33,34,37,38,41,42,45,47,50]
+      [12, 13, 16, 18, 20, 21, 23, 26, 27, 29, 33, 34, 37, 38, 41, 42, 45, 47, 50]
     )
   })
 })
@@ -124,11 +124,11 @@ describe('getDestinationInfo', () => {
     tripData = trips.trips;
     destinationData = destinations.destinations;
   })
-  it ('should be able to return the location\s destination information based on the matching destination IDs', () => {
+  it ('should be able to return the locations destination information based on the matching destination IDs', () => {
     const userID = 8;
-    const destinationIDs = getNonVisitedDestinationIDs(tripData,userID)
-    const availableDestinations = [destinationIDs[0],destinationIDs[2]]
-    const destinations = getDestinationInfo(destinationData,availableDestinations)
+    const destinationIDs = getNonVisitedDestinationIDs(tripData, userID)
+    const availableDestinations = [destinationIDs[0], destinationIDs[2]]
+    const destinations = getDestinationInfo(destinationData, availableDestinations)
     expect(destinations[0].lodgingCost).to.equal(158)
     expect(destinations[0].flightCost).to.equal(275)
     expect(destinations[1].lodgingCost).to.equal(100)
@@ -137,7 +137,7 @@ describe('getDestinationInfo', () => {
 })
 
 describe('findDestinationInfo', () => {
-  it ('should be able to return the destination\s info, given the destination name.', () => {
+  it ('should be able to return the destinations info, given the destination name.', () => {
     const destinationName = 'Miami, Florida'
     const destinationData = destinations.destinations;
     const destinationInfo = findDestinationInfo(destinationData, destinationName)
@@ -173,11 +173,11 @@ describe('findLastTripId', () => {
 })
 
 describe('getPendingUserTrips', () => {
-  it ('should return only a user\s pending trips', () => {
+  it ('should return only a users pending trips', () => {
     const destinationData = destinations.destinations
     const tripData = trips.trips;
     const userID = 12;
-    const pendingTrips = getPendingUserTrips(destinationData, tripData,userID);
+    const pendingTrips = getPendingUserTrips(destinationData, tripData, userID);
     expect(pendingTrips).to.deep.equal([
       {
         "id": 36,
@@ -204,13 +204,24 @@ describe('getPendingUserTrips', () => {
     ])
   })
 })
+
 describe('getAgencyIncome', () => {
-  it (`should be able to return the total income made by the agency for this year\s trips rounded to the cent. 
+  it (`should be able to return the total income made by the agency for this years trips rounded to the cent. 
     Should only calculate from approved trips`, () => {
     let tripsData = trips.trips;
     let destinationData = destinations.destinations;
     const totalIncome = getAgencyIncome(destinationData, tripsData);
     expect(totalIncome.flightIncome).to.equal(15)
     expect(totalIncome.lodgingIncome).to.equal(600)
+  })
+})
+
+describe('getUpcomingUserTrips', () => {
+  it ('should only return approved trips for this year.', () => {
+    let tripData = trips.trips;
+    const userID = 50;
+    const upcomingTrip = getUpcomingUserTrips(tripData, userID);
+    const currentYear = upcomingTrip[0].date.getFullYear()
+    expect(currentYear).to.equal(2024)
   })
 })
