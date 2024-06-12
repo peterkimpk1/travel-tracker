@@ -70,9 +70,13 @@ h1 {
         text-align: center;
     };
 }
-.update-trip-message, .delete-trip-message {
+.update-trip-message {
     font-weight: 500;
     color: #1373E6;
+}
+.delete-trip-message {
+    font-weight: 500;
+    color:rgba(213,107,31,1)
 }
 .pending-status {
     font-weight: 500;
@@ -81,4 +85,7 @@ h1 {
 .approved-status {
     font-weight: 500;
     color: #1373E6;
+}
+.deny-trip {
+    background: linear-gradient(0deg, rgba(213,107,31,1) 35%, rgba(250,77,9,1) 100%);
 }

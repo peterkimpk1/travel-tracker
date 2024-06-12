@@ -36,6 +36,7 @@ const getPendingUserTrips = (destinationData, tripData, userID) => {
         return {destinationName: destinationInfo.destination, ...trip}
     })
 }
+
 const getAgencyTrips = (destinationData, tripData, status) => {
     let pendingTrips = tripData.filter(trip => trip.status === status)
     return pendingTrips.map(trip => {
@@ -52,7 +53,16 @@ const getPastUserTrips = (tripData, userID) => {
             userTrips.push(trip)
         }
         return userTrips
-    },[])
+    },[]).filter(trip => new Date(trip.date).getFullYear() < 2024)
+}
+
+const getUpcomingUserTrips = (tripData, userID) => {
+    return tripData.reduce((userTrips, trip) => {
+        if(trip.userID === userID && trip.status === 'approved') {
+            userTrips.push(trip)
+        }
+        return userTrips
+    },[]).filter(trip => new Date(trip.date).getFullYear() === 2024)
 }
 
 const getVisitedDestinationNames = (tripData, destinationData, userID) => {
@@ -131,5 +141,6 @@ export {
     calculateTotalTripCost,
     findLastTripId,
     getAgencyTrips,
-    getAgencyIncome
+    getAgencyIncome,
+    getUpcomingUserTrips
 }
