@@ -157,7 +157,7 @@ const displayUsersOnTrips = (trips) => {
          return trip
      })
     const filteredTrips = allTrips.filter(trip => ((trip.date.getDate() === currentDate.day) &&(trip.date.getMonth() + 1) === parseInt(currentDate.month) && (trip.date.getFullYear() === currentDate.year))).sort((a,b)=>a.date-b.date)
-    const futureTrips = allTrips.filter(trip => ((trip.date.getMonth() + 1) >= parseInt(currentDate.month) && (trip.date.getFullYear() >= currentDate.year))).sort((a,b)=>a.date-b.date)
+    const futureTrips = allTrips.filter(trip => ((trip.date.getDate() > currentDate.day) && (trip.date.getMonth() + 1) >= parseInt(currentDate.month) && (trip.date.getFullYear() >= currentDate.year))).sort((a,b)=>a.date-b.date)
     allUsersOnTrips.innerHTML = "";
     filteredTrips.forEach(trip => {
         allUsersOnTrips.innerHTML += `<strong>[ ${trip.destinationName} ]</strong>&nbsp;&nbsp;
