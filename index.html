@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+  <title>Travel Tracker</title>
+</head>
+<body>
+  <section class="login-page-header" >
+    <header>
+      <h1>DEPARTURES</h1>
+      <div class="display-tag-wrapper">
+        <ul class="display-tags">
+          <li>TIME</li>
+          <li>DESTINATION</li>
+          <li>FLIGHT</li>
+          <li>GATE</li>
+          <li>REMARKS</li>
+        </ul>
+      </div>
+    </header>
+  </section>
+  <div class="login-page-background" >
+      <section class="login-page-wrapper">
+        <form class=login type="submit">
+          <p class="fail-message"style="font-family:sans-serif;color: rgb(255, 191, 0);">Incorrect username or password.</p>
+          <label for="username"></label>
+          <input name="username" type="text" id="username" placeholder="Username"/><br>
+          <label for="password"></label>
+          <input name="password" type="text" id="password" placeholder="Password"/>
+          <input type="submit" value="Login">
+          <p class="success-message" style="font-family:sans-serif;color: rgb(255, 191, 0);">Login success! logging in now..</p>
+        </form>
+      </section>
+  </div>
+  <section class="dashboard-page hidden">
+    <div class="background-wrapper">
+      <nav>
+        <div class="nav-title">Travel Tracker</div>
+        <ul class="nav-bar-menus">
+          <li>Past</li>
+          <li>Upcoming</li>
+          <li>Pending</li>
+          <button id="user-logout-btn">Logout</button>
+        </ul>
+      </nav>
+      <section class="welcome-section">
+        <div class="welcome-message-container">
+          <h1 class="welcome-message">Welcome, [User]</h1>
+        </div>
+        <section class="summary-section">
+          <div class="summary-container">
+            <h2>Summary</h2>
+            <p class="user-total-costs"></p>
+          </div>
+        </section>
+        <div class="user-wrapper">
+          <h2 class="last-trip-date">Your last trip was [Date].</h2>
+          <button data-open-modal>Book Another Trip?</button>
+        </div>
+        <dialog data-modal class="modal">
+          <button data-close-modal formmethod="dialog">X</button>
+          <div class="glide">
+            <div class="glide__track" data-glide-el="track">
+              <ul class="glide__slides" id="all-destinations">
+        
+              </ul>
+            </div>
+              <div class="glide__arrows" data-glide-el="controls">
+                <button class="glide__arrow glide__arrow--left" data-glide-dir="<"><</button>
+                <button class="glide__arrow glide__arrow--right" data-glide-dir=">">></button>
+              </div>
+          </div>
+          <div class="form-estimate-wrapper">
+            <form id="book-trip-form">
+              <label for="destinations">Destination: </label>
+              <select name="destinations" id="destinations"></select><br>
+              <label for="trip-date">Trip Starting Date: </label>
+              <input type="date" name="date" id="trip-date" min=""/><br>
+              <label for="duration">Duration of Trip: </label>
+              <input type="number" name="duration" id="duration" step="1" min="1" max="31" placeholder="5"/><span style="margin-left:5px">days</span><br>
+              <label for="travelers">Number of Travelers: </label>
+              <input type="number" name="travelers" id="travelers" step="1" min="1" max="15" placeholder="5"/><span style="margin-left:5px">adults</span><br>
+              <input type="submit" id="calculate-estimate-btn" value="See Estimate"></input>
+              <input type="submit" id="book-trip-btn" value="Book this trip?"></input>
+            </form>
+            <section class="breakdown">
+              <h3>Breakdown</h3>
+              <hr><br>
+              <p class="estimate-flight-cost">Estimated Total Flight Cost </p>
+              <p class="estimate-lodge-cost">Estimated Total Lodging Cost </p><br>
+              <hr id="total-line">
+              <p class="total-estimate">Total Estimate: </p>
+            </section>
+        </div> 
+        </dialog>
+      </section>
+
+      <section class="trips-section">
+        <div class="section-upcoming-card-wrapper">
+          <h3>Upcoming Trip(s)</h3>
+          <div class="trip-wrapper">
+            <h4 class="upcoming-trips-title">"Looks like you don't have any upcoming trips yet. Book your next adventure today!"</h4>
+            <p class="user-upcoming-trips">
+            </p>
+          </div>
+        </div>
+        <div class="section-card-wrapper">
+          <h3>Past Trip(s)</h3>
+          <div class="glide">
+            <div class="glide__track" data-glide-el="track">
+              <ul class="glide__slides" id="past-destinations">
+                
+              </ul>
+            </div>
+            <div class="glide__arrows" data-glide-el="controls">
+              <button class="glide__arrow glide__arrow--left" data-glide-dir="<"><</button>
+              <button class="glide__arrow glide__arrow--right" data-glide-dir=">">></button>
+            </div>
+          </div>
+          <h4 class="user-past-trips-title">Your past trip location(s):</h4>
+          <p class="user-past-trips"></p>
+        </div>
+        <div class="section-card-wrapper">
+          <h3>Pending Trip(s)</h3>
+          <div class="trip-wrapper">
+            <h4 class="user-pending-trips-title">Your pending trip location(s):</h4>
+            <p class="user-pending-trips"></p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+  <section class="agent-page hidden">
+    <div class="background-wrapper" id="agent-page-background">
+      <section class="card-section-container">
+        <h1>Pending User Trips</h1>
+        <label for="pending-trips">Pending Trips: </label>
+        <select name="pending-trips" id="pending-trips"></select>
+        <ul class="agency-pending-user-trips"></ul>
+      </section>
+      <div class="welcome-message-wrapper">
+        <section class="welcome-message-container" id="agent-welcome">
+          <h1>Welcome, Agent</h1>
+        </section>
+        <button class="logout-btn">Logout</button>
+        <div class="summary-section-wrapper">
+          <section class="summary-section-container">
+            <h2>Summary</h2>
+            <p class="agency-total">Total income generated this year: </p>
+          </section>
+        </div>
+      </div>
+      <section class="card-section-container">
+        <h1>Current User Trips</h1>
+        <p class="all-user-pending-approved-trips">
+          
+        </p>
+        <h1>Future User Trips</h1>
+        <p class="all-future-pending-approved-trips">
+
+        </p>
+      </section>
+
+  </div>
+  </section>
+  <script src="bundle.js"></script>
+
+</body>
+</html>
